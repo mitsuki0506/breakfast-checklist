@@ -5,144 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>朝食チェックリスト</title>
 
-  <style>
-    body{
-      font-family:-apple-system,BlinkMacSystemFont,sans-serif;
-      background:#f5f5f5;
-      margin:0;
-      padding:20px;
-    }
-
-    .card{
-      max-width:600px;
-      margin:auto;
-      background:#fff;
-      border-radius:16px;
-      padding:20px;
-      box-shadow:0 5px 15px rgba(0,0,0,.08);
-    }
-
-    h2{
-      margin-top:0;
-    }
-
-    .progress{
-      font-weight:bold;
-      margin-bottom:20px;
-    }
-
-    label{
-      display:block;
-      padding:14px 10px;
-      border-bottom:1px solid #eee;
-      font-size:18px;
-    }
-
-    input[type=checkbox]{
-      transform:scale(1.4);
-      margin-right:10px;
-    }
-
-    .danger{
-      color:#d60000;
-      font-weight:bold;
-    }
-
-    .done{
-      color:#999;
-      text-decoration:line-through;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="card">
+<div class="container">
 
-<h2>朝食チェックリスト</h2>
+    <h1>朝食チェックリスト</h1>
 
-<div class="progress">
-進捗
-<span id="count">0</span> /
-<span id="total">0</span>
-</div>
+    <div class="progress">
+        <span id="progress">0 / 0 完了</span>
+    </div>
 
-<div id="list"></div>
+    <div id="checklist"></div>
 
 </div>
 
-<script>
-
-const items=[
-
-"挨拶をする",
-"携帯でHACCPをする",
-"HACCPの紙を書く",
-"パン・プリンの発注",
-"ホワイトボード確認",
-
-"グラハムを出す",
-"バナナケーキを出す",
-"バターを出す",
-
-"1台目カートを組む",
-
-"オレンジジュース",
-"ピンクグレープフルーツジュース",
-"シャンティー",
-"ベリーソース",
-"ハム盛り"
-
-];
-
-const danger=[
-"オレンジジュース",
-"ピンクグレープフルーツジュース",
-"シャンティー",
-"ベリーソース",
-"ハム盛り"
-];
-
-const list=document.getElementById("list");
-
-document.getElementById("total").textContent=items.length;
-
-items.forEach(name=>{
-
-const label=document.createElement("label");
-
-if(danger.includes(name)){
-label.classList.add("danger");
-}
-
-label.innerHTML=
-`<input type="checkbox">${name}`;
-
-list.appendChild(label);
-
-});
-
-const checks=document.querySelectorAll("input");
-
-checks.forEach(c=>{
-
-c.onchange=()=>{
-
-let checked=document.querySelectorAll("input:checked").length;
-
-document.getElementById("count").textContent=checked;
-
-checks.forEach(box=>{
-
-box.parentElement.classList.toggle("done",box.checked);
-
-});
-
-};
-
-});
-
-</script>
+<script src="app.js"></script>
 
 </body>
 </html>
