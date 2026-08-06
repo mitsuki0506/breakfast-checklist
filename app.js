@@ -12,22 +12,22 @@ const items = [
 
   {
     id: "order",
-    text: "パン、プリンの発注をする（ホワイトボードを確認！）"
+    text: "パン、プリンの発注（ホワイトボード確認）"
   },
 
   {
     id: "graham_banana",
-    text: "明日の分のグラハム、バナナケーキを出す"
+    text: "明日分のグラハム、バナナケーキ"
   },
 
   {
     id: "butter",
-    text: "明日の分のバターを出す"
+    text: "明日分のバター"
   },
 
   {
     id: "cart1",
-    text: "1台目カートを抜けがないように組む"
+    text: "1台目カート揃っているか"
   },
 
   // 忘れやすいもの
@@ -59,104 +59,99 @@ const items = [
 
   {
     id: "washoku_handover",
-    text: "和食の引き継ぎをする"
+    text: "和食引き継ぎ"
   },
 
   {
     id: "cake_down",
-    text: "下ろす時にケーキもおろす"
+    text: "ケーキB1"
   },
 
   {
     id: "japa_washi",
-    text: "ジャパのお盆に和紙をしく"
+    text: "JPお盆に和紙"
   },
 
   {
     id: "cereal",
-    text: "シリアルの補充をする"
+    text: "シリアルの補充"
   },
 
   {
     id: "jam",
-    text: "ジャムの補充をする"
+    text: "ジャムの補充"
   },
 
   {
     id: "yogurt",
-    text: "ヨーグルトの補充をする"
+    text: "ヨーグルトの補充"
   },
 
   {
     id: "ham_salmon",
-    text: "ハム、サーモンを盛る"
+    text: "皿盛り【サーモンなど】"
   },
 
   {
     id: "room_change",
-    text: "日によってルームの入れ替えをする"
+    text: "ルームの入れ替え"
   },
 
   {
     id: "misoshiru_bowl",
-    text: "味噌汁椀を数を見て組む"
+    text: "味噌汁椀 個数確認"
   },
 
   {
     id: "washoku_count",
-    text: "和食を数を見て組む"
+    text: "和食小鉢 個数確認"
   },
 
   {
     id: "leaf",
-    text: "明日のミックスリーフ、ロメインを補充する"
+    text: "ミックスリーフ、ロメイン補充"
   },
 
   {
     id: "blueberry_apple",
-    text: "ブルーベリー、リンゴを補充する"
+    text: "ブルーベリー、リンゴを補充"
   },
 
   {
     id: "wrap_check",
-    text: "フルーツ、和食などのラップが綺麗にされているか確認"
+    text: "フルーツ、和食などのラップ確認"
   },
 
   {
     id: "juice_amount",
-    text: "ジュースの量を確認する"
+    text: "ジュースの量を確認"
   },
 
   {
     id: "salad",
-    text: "サラダ（きゅうり、赤玉など）を補充する"
+    text: "サラダ（きゅうり、赤玉など）の補充"
   },
 
   {
     id: "frozen_plate",
-    text: "皿盛りで使った分を冷凍から出して補充する"
+    text: "皿盛り使用分補充"
   },
 
   {
     id: "v_mine",
-    text: "Vミネを忘れずに補充する",
+    text: "冷凍BOX補充(ヴィーガン類、チキンライス)",
     warning: true
   },
 
-  {
-    id: "plant_egg",
-    text: "プラントエッグを忘れずに補充する",
-    warning: true
-  },
 
   {
     id: "dishes_cart",
-    text: "洗われた食器をカートになおす"
+    text: "洗浄後の食器片づけ"
   },
 
   {
     id: "final_check",
-    text: "足りないものはないか最終確認",
+    text: "不足はないか最終確認",
     final: true
   }
 ];
@@ -423,7 +418,8 @@ resetButton.addEventListener("click", async () => {
     alert("全解除できませんでした。");
   }
 
-});if ("serviceWorker" in navigator) {
+});
+if ("serviceWorker" in navigator) {
 
   window.addEventListener("load", () => {
 
