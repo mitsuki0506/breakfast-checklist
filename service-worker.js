@@ -1,4 +1,4 @@
-const CACHE_NAME = "breakfast-checklist-v1";
+const CACHE_NAME = "breakfast-checklist-v2";
 
 const FILES = [
   "./",
