@@ -7,7 +7,11 @@
 
   <link rel="stylesheet" href="style.css">
 </head>
-
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#ffffff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="朝食チェック">
 <body>
 
 <div class="container">
@@ -15,10 +19,14 @@
     <h1>朝食チェックリスト</h1>
 
     <div class="progress">
-        <span id="progress">0 / 0 完了</span>
-    </div>
+    <span id="progress">0 / 0 完了</span>
+</div>
 
-    <div id="checklist"></div>
+<button id="resetButton" class="reset-button">
+    全てのチェックを解除
+</button>
+
+<div id="checklist"></div>
 
 </div>
 

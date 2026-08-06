@@ -385,4 +385,57 @@ onSnapshot(
       "Firebaseとの接続でエラーが発生しました。"
     );
   }
-);
+);const resetButton = document.getElementById("resetButton");
+
+resetButton.addEventListener("click", async () => {
+
+  const answer = confirm(
+    "今日のチェックをすべて解除しますか？\n\n職場のみんなの画面も解除されます。"
+  );
+
+  if (!answer) {
+    return;
+  }
+
+  const emptyState = {};
+
+  items.forEach(item => {
+    emptyState[item.id] = false;
+  });
+
+  try {
+
+    await setDoc(
+      checklistRef,
+      {
+        date: today,
+        checked: emptyState
+      },
+      {
+        merge: true
+      }
+    );
+
+  } catch (error) {
+
+    console.error(error);
+
+    alert("全解除できませんでした。");
+  }
+
+});if ("serviceWorker" in navigator) {
+
+  window.addEventListener("load", () => {
+
+    navigator.serviceWorker
+      .register("./service-worker.js")
+      .then(() => {
+        console.log("アプリ機能を有効化しました");
+      })
+      .catch(error => {
+        console.error("Service Workerエラー:", error);
+      });
+
+  });
+
+}

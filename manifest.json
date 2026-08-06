@@ -1,0 +1,11 @@
+{
+  "name": "朝食業務チェックリスト",
+  "short_name": "朝食チェック",
+  "description": "朝食業務の共有チェックリスト",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "lang": "ja",
+  "orientation": "portrait"
+}

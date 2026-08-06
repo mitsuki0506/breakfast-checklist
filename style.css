@@ -108,4 +108,53 @@ h1{
         font-size:16px;
         padding:15px 6px;
     }
+}.reset-button{
+    width:100%;
+    padding:13px;
+    margin:8px 0 14px;
+    border:none;
+    border-radius:10px;
+    background:#eeeeee;
+    color:#333;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.reset-button:active{
+    transform:scale(.98);
+}
+
+@media (prefers-color-scheme:dark){
+
+    body{
+        background:#111;
+        color:#eee;
+    }
+
+    .container{
+        background:#181818;
+    }
+
+    .progress{
+        background:#181818;
+        border-color:#333;
+    }
+
+    .item{
+        border-color:#333;
+    }
+
+    .item.done{
+        background:#222;
+    }
+
+    .item.warning{
+        background:#321919;
+    }
+
+    .reset-button{
+        background:#333;
+        color:white;
+    }
 }
