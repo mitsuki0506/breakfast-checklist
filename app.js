@@ -5,7 +5,7 @@ import {
   onSnapshot
 } from "./firebase.js";
 
-const items = [
+const defaultItems = [
   { id: "greeting", text: "挨拶をする" },
   { id: "haccp_phone", text: "携帯でHACCPをする" },
   { id: "haccp_paper", text: "HACCPの紙を書く" },
@@ -155,7 +155,11 @@ const items = [
     final: true
   }
 ];
+let customItems = [];
 
+function getItems() {
+  return [...defaultItems, ...customItems];
+}
 const checklist = document.getElementById("checklist");
 const progress = document.getElementById("progress");
 
@@ -180,9 +184,15 @@ const checklistRef = doc(
   "breakfastChecklists",
   today
 );
-
+const settingsRef = doc(
+  db,
+  "breakfastSettings",
+  "customItems"
+);
 // 進捗表示
 function updateProgress() {
+
+  const items = getItems();
 
   const completed = items.filter(
     item => state[item.id] === true
@@ -200,6 +210,8 @@ function updateProgress() {
 
   }
 }
+
+
 
 // チェック状態をFirebaseに保存
 async function saveCheck(id, checked) {
@@ -235,7 +247,11 @@ function renderChecklist() {
 
   checklist.innerHTML = "";
 
+  const items = getItems();
+
   items.forEach(item => {
+
+
 
     // 忘れやすい項目の見出し
     if (item.id === "orange") {
@@ -282,7 +298,42 @@ function renderChecklist() {
     label.appendChild(text);
 
     div.appendChild(label);
+if (item.custom) {
 
+  const deleteButton = document.createElement("button");
+
+  deleteButton.className = "delete-button";
+  deleteButton.textContent = "削除";
+
+  deleteButton.addEventListener("click", async event => {
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    const answer = confirm(
+      `「${item.text}」を削除しますか？`
+    );
+
+    if (!answer) return;
+
+    customItems = customItems.filter(
+      custom => custom.id !== item.id
+    );
+
+    await setDoc(
+      settingsRef,
+      {
+        items: customItems
+      },
+      {
+        merge: true
+      }
+    );
+
+  });
+
+  div.appendChild(deleteButton);
+}
     if (checkbox.checked) {
       div.classList.add("done");
     }
@@ -419,6 +470,77 @@ resetButton.addEventListener("click", async () => {
   }
 
 });
+const addItemButton =
+  document.getElementById("addItemButton");
+
+addItemButton.addEventListener("click", async () => {
+
+  const text = prompt(
+    "追加するチェック項目を入力してください"
+  );
+
+  if (!text) return;
+
+  const cleanText = text.trim();
+
+  if (!cleanText) return;
+
+  const newItem = {
+    id: "custom_" + Date.now(),
+    text: cleanText,
+    custom: true
+  };
+
+  customItems.push(newItem);
+
+  try {
+
+    await setDoc(
+      settingsRef,
+      {
+        items: customItems
+      },
+      {
+        merge: true
+      }
+    );
+
+  } catch (error) {
+
+    console.error(error);
+    alert("項目を追加できませんでした.");
+
+  }
+});
+onSnapshot(
+  settingsRef,
+
+  snapshot => {
+
+    if (snapshot.exists()) {
+
+      const data = snapshot.data();
+
+      customItems = data.items || [];
+
+    } else {
+
+      customItems = [];
+
+    }
+
+    renderChecklist();
+  },
+
+  error => {
+
+    console.error(
+      "追加項目の読み込みエラー:",
+      error
+    );
+
+  }
+);
 if ("serviceWorker" in navigator) {
 
   window.addEventListener("load", () => {

@@ -157,4 +157,25 @@ h1{
         background:#333;
         color:white;
     }
+}.add-button{
+    width:100%;
+    padding:14px;
+    margin:16px 0;
+    border:none;
+    border-radius:10px;
+    background:#222;
+    color:white;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.delete-button{
+    border:none;
+    background:transparent;
+    color:#c62828;
+    font-size:14px;
+    padding:5px 8px;
+    cursor:pointer;
+    flex-shrink:0;
 }
