@@ -362,16 +362,16 @@ if (item.warning) {
       state[item.id] === true;
 const dartCheck = document.createElement("span");
 dartCheck.className = "dart-check";
-dartCheck.textContent = "🎯";
-    dartCheck.style.display = checkbox.checked ? "inline" : "none";
+dartCheck.textContent = "○";
+    dartCheck.style.cursor = "pointer";
+   dartCheck.textContent = checkbox.checked ? "🎯" : "○";
     const text =
       document.createElement("span");
 
     text.textContent = item.text;
 
-    label.appendChild(checkbox);
-    label.appendChild(dartCheck);
-    label.appendChild(text);
+   label.appendChild(dartCheck);
+label.appendChild(text);
 
     div.appendChild(label);
 
@@ -379,7 +379,9 @@ dartCheck.textContent = "🎯";
 
   deleteButton.className = "delete-button";
   deleteButton.textContent = "削除";
-
+dartCheck.addEventListener("click", () => {
+  checkbox.click();
+});
   deleteButton.addEventListener("click", async event => {
 
     event.preventDefault();
