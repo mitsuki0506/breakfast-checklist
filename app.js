@@ -274,9 +274,17 @@ div.draggable = false;
 dragHandle.className = "drag-handle";
 dragHandle.textContent = "☰";
 div.appendChild(dragHandle);
-    
+    let longPressTimer;
+let pressStartX = 0;
+let pressStartY = 0;
+let longPressActivated = false;
 dragHandle.addEventListener("pointerdown", event => {
+  pressStartX = event.clientX;
+  pressStartY = event.clientY;
+  longPressActivated = false;
+
   longPressTimer = setTimeout(() => {
+    longPressActivated = true;
     draggedItem = div;
     dragHandle.setPointerCapture(event.pointerId);
 
@@ -299,6 +307,16 @@ dragHandle.addEventListener("pointerleave", () => {
   }
 });
     dragHandle.addEventListener("pointermove", event => {
+      if (!longPressActivated) {
+  const moveX = Math.abs(event.clientX - pressStartX);
+  const moveY = Math.abs(event.clientY - pressStartY);
+
+  if (moveX > 10 || moveY > 10) {
+    clearTimeout(longPressTimer);
+  }
+
+  return;
+}
   if (!draggedItem) return;
 
   const target = document
