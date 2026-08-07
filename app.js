@@ -273,35 +273,26 @@ div.draggable = false;
     const dragHandle = document.createElement("span");
 dragHandle.className = "drag-handle";
 dragHandle.textContent = "☰";
-    const dragHandle = document.createElement("span");
-dragHandle.textContent = "☰";
-dragHandle.className = "drag-handle";
 div.appendChild(dragHandle);
     let longPressTimer;
 let pressStartX = 0;
 let pressStartY = 0;
 let longPressActivated = false;
 dragHandle.addEventListener("pointerdown", event => {
-
-  event.preventDefault();
-
   pressStartX = event.clientX;
   pressStartY = event.clientY;
   longPressActivated = false;
 
   // 指を置いた瞬間から追跡する
-
+  dragHandle.setPointerCapture(event.pointerId);
 
   longPressTimer = setTimeout(() => {
     longPressActivated = true;
     draggedItem = div;
-  div.classList.add("dragging");
 
-  dragHandle.setPointerCapture(event.pointerId);
-
-}, 500);
-    div.classList.add("dragging");
-
+    if (navigator.vibrate) {
+      navigator.vibrate(50);
+    }
   }, 500);
 });
     dragHandle.addEventListener("pointerup", () => {
@@ -317,48 +308,35 @@ dragHandle.addEventListener("pointerleave", () => {
     clearTimeout(longPressTimer);
   }
 });
-dragHandle.addEventListener("pointermove", event => {
- if (event.timeStamp - (draggedItem.lastMoveTime || 0) < 16) {
+    dragHandle.addEventListener("pointermove", event => {
+      if (!longPressActivated) {
+  const moveX = Math.abs(event.clientX - pressStartX);
+  const moveY = Math.abs(event.clientY - pressStartY);
+
+  if (moveX > 10 || moveY > 10) {
+  clearTimeout(longPressTimer);
+    longPressActivated = false;
+  longPressTimer = null;
+  longPressActivated = false;
+}
+
   return;
 }
-
-if (draggedItem) {
-  draggedItem.lastMoveTime = event.timeStamp;
-}
-  if (!longPressActivated) {
-    const moveX = Math.abs(event.clientX - pressStartX);
-    const moveY = Math.abs(event.clientY - pressStartY);
-
-    if (moveX > 20 || moveY > 20) {
-      clearTimeout(longPressTimer);
-      longPressTimer = null;
-    }
-
-    return;
-  }
-
-  event.preventDefault();
-
   if (!draggedItem) return;
 
   const target = document
-  .elementFromPoint(event.clientX, event.clientY)
-  ?.closest(".item");
+    .elementFromPoint(event.clientX, event.clientY)
+    ?.closest(".item");
 
-if (target && target !== draggedItem) {
+  if (!target || target === draggedItem) return;
+
   const rect = target.getBoundingClientRect();
+  const after = event.clientY > rect.top + rect.height / 2;
 
-  if (event.clientY < rect.top + rect.height / 2) {
-    checklist.insertBefore(draggedItem, target);
+  if (after) {
+    target.after(draggedItem);
   } else {
-    checklist.insertBefore(draggedItem, target.nextSibling);
-  }
-}
-
-  if (closestItem) {
-    checklist.insertBefore(draggedItem, closestItem);
-  } else {
-    checklist.appendChild(draggedItem);
+    target.before(draggedItem);
   }
 });
    dragHandle.addEventListener("pointerup", async () => {
@@ -385,8 +363,6 @@ if (target && target !== draggedItem) {
     console.error("並び順の保存エラー:", error);
   }
 
-   div.style.transform = "";
-div.classList.remove("dragging");
   draggedItem = null;
 });
     if (item.warning) {
@@ -519,13 +495,9 @@ div.addEventListener("dragover", event => {
   const after = event.clientY > rect.top + rect.height / 2;
 
   if (after) {
-    if (div.nextSibling !== draggedItem) {
-      div.after(draggedItem);
-    }
+    div.after(draggedItem);
   } else {
-    if (div.previousSibling !== draggedItem) {
-      div.before(draggedItem);
-    }
+    div.before(draggedItem);
   }
 });
     div.addEventListener("dragend", async () => {
@@ -550,6 +522,7 @@ itemOrder = [...checklist.querySelectorAll(".item")]
   draggedItem = null;
 });
     checklist.appendChild(div);
+  });
 
   updateProgress();
 }
