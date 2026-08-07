@@ -492,6 +492,7 @@ onSnapshot(
       const data = snapshot.data();
 
       state = data.checked || {};
+      itemOrder = data.itemOrder || [];
 
     } else {
 
