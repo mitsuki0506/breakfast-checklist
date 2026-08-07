@@ -509,15 +509,6 @@ addItemButton.addEventListener("click", async () => {
       {
         items: customItems
       },
-     if (snapshot.exists()) {
-  const data = snapshot.data();
-
-  customItems = data.items || [];
-  deletedDefaultIds = data.deletedDefaultIds || [];
-} else {
-  customItems = [];
-  deletedDefaultIds = [];
-}
 
 });
 onSnapshot(
@@ -528,8 +519,7 @@ onSnapshot(
     if (snapshot.exists()) {
 
       const data = snapshot.data();
-
-     const data = snapshot.data();
+customItems = data.items || [];
 deletedDefaultIds = data.deletedDefaultIds || [];
     } else {
 
