@@ -161,14 +161,8 @@ function getItems() {
   return items.filter(
     item => item.category === currentCategory
  );
-  
-    tabButtons.forEach(btn => {
-      btn.classList.remove("active");
-    });
-
-    button.classList.add("active");
-
-    renderChecklist();
+ }
+    
 let state = {};
 let draggedItem = null;
 // 今日の日付を取得
