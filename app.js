@@ -547,7 +547,6 @@ itemOrder = [...checklist.querySelectorAll(".item")]
   draggedItem = null;
 });
     checklist.appendChild(div);
-  });
 
   updateProgress();
 }
