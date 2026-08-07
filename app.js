@@ -509,17 +509,16 @@ addItemButton.addEventListener("click", async () => {
       {
         items: customItems
       },
-      {
-        merge: true
-      }
-    );
+     if (snapshot.exists()) {
+  const data = snapshot.data();
 
-  } catch (error) {
+  customItems = data.items || [];
+  deletedDefaultIds = data.deletedDefaultIds || [];
+} else {
+  customItems = [];
+  deletedDefaultIds = [];
+}
 
-    console.error(error);
-    alert("項目を追加できませんでした.");
-
-  }
 });
 onSnapshot(
   settingsRef,
