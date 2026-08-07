@@ -360,13 +360,17 @@ if (item.warning) {
     checkbox.type = "checkbox";
     checkbox.checked =
       state[item.id] === true;
-
+const dartCheck = document.createElement("span");
+dartCheck.className = "dart-check";
+dartCheck.textContent = "🎯";
+    dartCheck.style.display = checkbox.checked ? "inline" : "none";
     const text =
       document.createElement("span");
 
     text.textContent = item.text;
 
     label.appendChild(checkbox);
+    label.appendChild(dartCheck);
     label.appendChild(text);
 
     div.appendChild(label);
@@ -417,6 +421,7 @@ deletedDefaultIds: deletedDefaultIds
     checkbox.addEventListener(
       "change",
       async () => {
+        dartCheck.style.display = checkbox.checked ? "inline" : "none";
 
         // 最終確認
         if (
