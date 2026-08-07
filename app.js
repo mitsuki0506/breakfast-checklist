@@ -30,32 +30,7 @@ const defaultItems = [
     text: "1台目カート揃っているか"
   },
 
-  // 忘れやすいもの
-  {
-    id: "orange",
-    text: "オレンジジュース",
-    warning: true
-  },
-  {
-    id: "pink_grapefruit",
-    text: "ピングレジュース",
-    warning: true
-  },
-  {
-    id: "chantilly",
-    text: "シャンティー",
-    warning: true
-  },
-  {
-    id: "berry_sauce",
-    text: "ベリーソース",
-    warning: true
-  },
-  {
-    id: "ham_plate",
-    text: "ハム盛り",
-    warning: true
-  },
+ 
 
   {
     id: "washoku_handover",
@@ -140,7 +115,7 @@ const defaultItems = [
   {
     id: "v_mine",
     text: "冷凍BOX補充(ヴィーガン類、チキンライス)",
-    warning: true
+
   },
 
 
@@ -270,24 +245,6 @@ function renderChecklist() {
 
   items.forEach(item => {
 
-
-
-    // 忘れやすい項目の見出し
-    if (item.id === "orange") {
-
-      const warningTitle =
-        document.createElement("div");
-
-      warningTitle.textContent =
-        "⚠️ 忘れやすいもの";
-
-      warningTitle.style.marginTop = "18px";
-      warningTitle.style.padding = "10px 6px";
-      warningTitle.style.fontWeight = "bold";
-      warningTitle.style.color = "#d60000";
-
-      checklist.appendChild(warningTitle);
-    }
 
     const div =
       document.createElement("div");
