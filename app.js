@@ -157,8 +157,8 @@ function getItems() {
   }
 console.log("表示items", items);
 console.log("category", currentCategory);
-  return items.filter(item => item.category === currentCategory);
-}
+  return items.filter(item => item.category === currentCategory)
+sort((a, b) => itemOrder.indexOf(a.id) - itemOrder.indexOf(b.id));
 const checklist = document.getElementById("checklist");
 const progress = document.getElementById("progress");
 const tabButtons = document.querySelectorAll(".tab-button");
