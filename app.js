@@ -304,7 +304,7 @@ if (item && item !== draggedItem) {
 }
 });
 
-dragHandle.addEventListener("pointerup", () => {
+dragHandle.addEventListener("pointerup", async () => {
   draggedItem.classList.remove("dragging");
   itemOrder = [...checklist.querySelectorAll(".item")]
   .map(el => el.dataset.id);
