@@ -468,7 +468,9 @@ const items = getItems();
         merge: true
       }
     );
-
+state = emptyState;
+renderChecklist();
+updateProgress();
   } catch (error) {
 
     console.error(error);
