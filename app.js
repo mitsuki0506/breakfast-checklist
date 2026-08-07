@@ -248,9 +248,12 @@ async function saveCheck(id, checked) {
 // 画面を作る
 function renderChecklist() {
 
-  checklist.innerHTML = "";
+checklist.innerHTML = "";
 
-  const items = getItems();
+const items = getItems();
+
+console.log("項目数", items.length);
+console.log(items);
 
   items.forEach(item => {
 
