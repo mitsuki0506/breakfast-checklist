@@ -310,7 +310,7 @@ dragHandle.addEventListener("pointerup", async () => {
   .map(el => el.dataset.id);
 
 await setDoc(
-  settingsRef,
+ checklistRef,
   {
     itemOrder: itemOrder
   },
@@ -495,6 +495,7 @@ onSnapshot(
       state = data.checked || {};
       itemOrder = data.itemOrder || [];
 
+      console.log("読み込んだ順番", itemOrder);
     } else {
 
       state = {};
