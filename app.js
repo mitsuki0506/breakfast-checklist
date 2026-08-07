@@ -269,54 +269,19 @@ function renderChecklist() {
 
     div.className = "item";
 div.dataset.id = item.id;
-div.draggable = false;
+div.draggable = true;
     const dragHandle = document.createElement("span");
 dragHandle.className = "drag-handle";
 dragHandle.textContent = "☰";
 div.appendChild(dragHandle);
-    let longPressTimer;
-let pressStartX = 0;
-let pressStartY = 0;
-let longPressActivated = false;
-dragHandle.addEventListener("pointerdown", event => {
-  pressStartX = event.clientX;
-  pressStartY = event.clientY;
-  longPressActivated = false;
-
-  longPressTimer = setTimeout(() => {
-    longPressActivated = true;
-    draggedItem = div;
-    dragHandle.setPointerCapture(event.pointerId);
-
-    if (navigator.vibrate) {
-      navigator.vibrate(50);
-    }
-  }, 500);
+    div.addEventListener("dragstart", () => {
+  draggedItem = div;
 });
-    dragHandle.addEventListener("pointerup", () => {
-  clearTimeout(longPressTimer);
-});
-
-dragHandle.addEventListener("pointercancel", () => {
-  clearTimeout(longPressTimer);
-});
-
-dragHandle.addEventListener("pointerleave", () => {
-  if (!draggedItem) {
-    clearTimeout(longPressTimer);
-  }
+    dragHandle.addEventListener("pointerdown", event => {
+  draggedItem = div;
+  dragHandle.setPointerCapture(event.pointerId);
 });
     dragHandle.addEventListener("pointermove", event => {
-      if (!longPressActivated) {
-  const moveX = Math.abs(event.clientX - pressStartX);
-  const moveY = Math.abs(event.clientY - pressStartY);
-
-  if (moveX > 10 || moveY > 10) {
-    clearTimeout(longPressTimer);
-  }
-
-  return;
-}
   if (!draggedItem) return;
 
   const target = document
@@ -334,12 +299,7 @@ dragHandle.addEventListener("pointerleave", () => {
     target.before(draggedItem);
   }
 });
-   dragHandle.addEventListener("pointerup", async () => {
-  clearTimeout(longPressTimer);
-
-  // 長押しが成立していなければ何もしない
-  if (!draggedItem) return;
-
+    dragHandle.addEventListener("pointerup", async () => {
   itemOrder = [...checklist.querySelectorAll(".item")]
     .map(el => el.dataset.id);
 
