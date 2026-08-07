@@ -156,9 +156,12 @@ const defaultItems = [
   }
 ];
 let customItems = [];
-
+let deletedDefaultIds = [];
 function getItems() {
-  return [...defaultItems, ...customItems];
+return [
+  ...defaultItems.filter(item => !deletedDefaultIds.includes(item.id)),
+  ...customItems
+];
 }
 const checklist = document.getElementById("checklist");
 const progress = document.getElementById("progress");
@@ -298,7 +301,6 @@ function renderChecklist() {
     label.appendChild(text);
 
     div.appendChild(label);
-if (item.custom) {
 
   const deleteButton = document.createElement("button");
 
@@ -316,14 +318,19 @@ if (item.custom) {
 
     if (!answer) return;
 
-    customItems = customItems.filter(
-      custom => custom.id !== item.id
-    );
+    if (item.custom) {
+  customItems = customItems.filter(
+    custom => custom.id !== item.id
+  );
+} else {
+  deletedDefaultIds.push(item.id);
+}
 
     await setDoc(
       settingsRef,
       {
-        items: customItems
+        items: customItems,
+deletedDefaultIds: deletedDefaultIds
       },
       {
         merge: true
@@ -333,7 +340,7 @@ if (item.custom) {
   });
 
   div.appendChild(deleteButton);
-}
+
     if (checkbox.checked) {
       div.classList.add("done");
     }
@@ -522,11 +529,11 @@ onSnapshot(
       const data = snapshot.data();
 
       customItems = data.items || [];
-
+deletedDefaultIds = data.deletedDefaultIds || [];
     } else {
 
       customItems = [];
-
+deletedDefaultIds = [];
     }
 
     renderChecklist();
