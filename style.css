@@ -36,10 +36,8 @@ h1{
 }
 
 .item{
-  border-bottom:1px solid #eee;
-  transition:.2s;
-  display:flex;
-  align-items:center;
+    border-bottom:1px solid #eee;
+    transition:.2s;
 }
 
 .item label{
@@ -50,7 +48,7 @@ h1{
     cursor:pointer;
     font-size:17px;
     line-height:1.45;
-flex:1;}
+}
 
 .item input[type="checkbox"]{
     width:24px;
@@ -181,28 +179,3 @@ flex:1;}
     cursor:pointer;
     flex-shrink:0;
 margin-left: auto;}
-@media (max-width: 600px) {
-  .item {
-    display: flex;
-    align-items: center;
-  }
-
-  .item label {
-    flex: 1;
-    min-width: 0;
-  }
-
-  .delete-button {
-    margin-left: auto;
-    flex-shrink: 0;
-    white-space: nowrap;
-  }
-}
-.drag-handle {
-  cursor: grab;
-  padding: 8px;
-  font-size: 20px;
-  flex-shrink: 0;
-  touch-action: none;
-  user-select: none;
-}
