@@ -501,15 +501,17 @@ onSnapshot(
     }
 
     renderChecklist();
+
   },
 
   error => {
 
     console.error(error);
 
-    alert(
-      "Firebaseとの接続でエラーが発生しました。"
-    );
+    alert("Firebaseとの接続でエラーが発生しました。");
+
+  }
+);
   }
 );const resetButton = document.getElementById("resetButton");
 
