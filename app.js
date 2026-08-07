@@ -514,7 +514,7 @@ onSnapshot(
   }
 );
 
-);const resetButton = document.getElementById("resetButton");
+const resetButton = document.getElementById("resetButton");
 
 resetButton.addEventListener("click", async () => {
 
