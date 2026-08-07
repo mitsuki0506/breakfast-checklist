@@ -161,8 +161,7 @@ function getItems() {
   return items.filter(
     item => item.category === currentCategory
  );
- }
-    
+ }    
 let state = {};
 let draggedItem = null;
 // 今日の日付を取得
