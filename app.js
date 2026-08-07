@@ -269,37 +269,101 @@ function renderChecklist() {
 
     div.className = "item";
 div.dataset.id = item.id;
-div.draggable = true;
+div.draggable = false;
     const dragHandle = document.createElement("span");
 dragHandle.className = "drag-handle";
 dragHandle.textContent = "☰";
 div.appendChild(dragHandle);
-    div.addEventListener("dragstart", () => {
-  draggedItem = div;
-});
-    dragHandle.addEventListener("pointerdown", event => {
-  draggedItem = div;
+    let longPressTimer;
+let pressStartX = 0;
+let pressStartY = 0;
+let longPressActivated = false;
+dragHandle.addEventListener("pointerdown", event => {
+
+  event.preventDefault();
+
+  pressStartX = event.clientX;
+  pressStartY = event.clientY;
+  longPressActivated = false;
+
+  // 指を置いた瞬間から追跡する
+
+
+  longPressTimer = setTimeout(() => {
+    longPressActivated = true;
+    draggedItem = div;
+  div.classList.add("dragging");
+
   dragHandle.setPointerCapture(event.pointerId);
+
+}, 500);
+    div.classList.add("dragging");
+
+  }, 500);
 });
-    dragHandle.addEventListener("pointermove", event => {
+    dragHandle.addEventListener("pointerup", () => {
+  clearTimeout(longPressTimer);
+});
+
+dragHandle.addEventListener("pointercancel", () => {
+  clearTimeout(longPressTimer);
+});
+
+dragHandle.addEventListener("pointerleave", () => {
+  if (!draggedItem) {
+    clearTimeout(longPressTimer);
+  }
+});
+dragHandle.addEventListener("pointermove", event => {
+ if (event.timeStamp - (draggedItem.lastMoveTime || 0) < 16) {
+  return;
+}
+
+if (draggedItem) {
+  draggedItem.lastMoveTime = event.timeStamp;
+}
+  if (!longPressActivated) {
+    const moveX = Math.abs(event.clientX - pressStartX);
+    const moveY = Math.abs(event.clientY - pressStartY);
+
+    if (moveX > 20 || moveY > 20) {
+      clearTimeout(longPressTimer);
+      longPressTimer = null;
+    }
+
+    return;
+  }
+
+  event.preventDefault();
+
   if (!draggedItem) return;
 
   const target = document
-    .elementFromPoint(event.clientX, event.clientY)
-    ?.closest(".item");
+  .elementFromPoint(event.clientX, event.clientY)
+  ?.closest(".item");
 
-  if (!target || target === draggedItem) return;
-
+if (target && target !== draggedItem) {
   const rect = target.getBoundingClientRect();
-  const after = event.clientY > rect.top + rect.height / 2;
 
-  if (after) {
-    target.after(draggedItem);
+  if (event.clientY < rect.top + rect.height / 2) {
+    checklist.insertBefore(draggedItem, target);
   } else {
-    target.before(draggedItem);
+    checklist.insertBefore(draggedItem, target.nextSibling);
+  }
+}
+
+  if (closestItem) {
+    checklist.insertBefore(draggedItem, closestItem);
+  } else {
+    checklist.appendChild(draggedItem);
   }
 });
-    dragHandle.addEventListener("pointerup", async () => {
+   dragHandle.addEventListener("pointerup", async () => {
+  clearTimeout(longPressTimer);
+
+  // 長押しが成立していなければ何もしない
+  if (!draggedItem) return;
+
   itemOrder = [...checklist.querySelectorAll(".item")]
     .map(el => el.dataset.id);
 
@@ -318,6 +382,8 @@ div.appendChild(dragHandle);
     console.error("並び順の保存エラー:", error);
   }
 
+   div.style.transform = "";
+div.classList.remove("dragging");
   draggedItem = null;
 });
     if (item.warning) {
@@ -450,9 +516,13 @@ div.addEventListener("dragover", event => {
   const after = event.clientY > rect.top + rect.height / 2;
 
   if (after) {
-    div.after(draggedItem);
+    if (div.nextSibling !== draggedItem) {
+      div.after(draggedItem);
+    }
   } else {
-    div.before(draggedItem);
+    if (div.previousSibling !== draggedItem) {
+      div.before(draggedItem);
+    }
   }
 });
     div.addEventListener("dragend", async () => {
@@ -573,7 +643,8 @@ addItemButton.addEventListener("click", async () => {
   const newItem = {
     id: "custom_" + Date.now(),
     text: cleanText,
-    custom: true
+    custom: true,
+    category: currentCategory
   };
 
   customItems.push(newItem);
@@ -594,12 +665,7 @@ addItemButton.addEventListener("click", async () => {
 }
 });
 
-    await setDoc(
-      settingsRef,
-      {
-        items: customItems
-      },
- );
+   
 onSnapshot(
   settingsRef,
 
