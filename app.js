@@ -156,7 +156,7 @@ function getItems() {
     });
   }
 
-  return items.filter(item => item.category === currentCategory);
+ return items.filter(item => !item.category || item.category === currentCategory);
 }
 const checklist = document.getElementById("checklist");
 const progress = document.getElementById("progress");
