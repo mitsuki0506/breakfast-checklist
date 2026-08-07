@@ -295,7 +295,10 @@ function renderChecklist() {
     div.className = "item";
 div.dataset.id = item.id;
 div.draggable = true;
-    
+ const dragHandle = document.createElement("span");
+dragHandle.className = "drag-handle";
+dragHandle.textContent = "☰";
+div.appendChild(dragHandle);   
 
 div.addEventListener("dragstart", () => {
   draggedItem = div;
