@@ -273,6 +273,9 @@ div.draggable = false;
     const dragHandle = document.createElement("span");
 dragHandle.className = "drag-handle";
 dragHandle.textContent = "☰";
+    const dragHandle = document.createElement("span");
+dragHandle.textContent = "☰";
+dragHandle.className = "drag-handle";
 div.appendChild(dragHandle);
     let longPressTimer;
 let pressStartX = 0;
@@ -547,7 +550,6 @@ itemOrder = [...checklist.querySelectorAll(".item")]
   draggedItem = null;
 });
     checklist.appendChild(div);
-  });
 
   updateProgress();
 }
