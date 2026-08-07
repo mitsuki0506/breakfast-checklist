@@ -502,14 +502,20 @@ addItemButton.addEventListener("click", async () => {
 
   customItems.push(newItem);
 
-  try {
-
-    await setDoc(
-      settingsRef,
-      {
-        items: customItems
-      },
-
+ try {
+  await setDoc(
+    settingsRef,
+    {
+      items: customItems
+    },
+    {
+      merge: true
+    }
+  );
+} catch (error) {
+  console.error(error);
+  alert("項目を追加できませんでした。");
+}
 });
 onSnapshot(
   settingsRef,
