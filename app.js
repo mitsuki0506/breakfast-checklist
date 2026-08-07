@@ -302,6 +302,49 @@ div.appendChild(dragHandle);
     div.addEventListener("dragstart", () => {
   draggedItem = div;
 });
+    dragHandle.addEventListener("pointerdown", event => {
+  draggedItem = div;
+  dragHandle.setPointerCapture(event.pointerId);
+});
+    dragHandle.addEventListener("pointermove", event => {
+  if (!draggedItem) return;
+
+  const target = document
+    .elementFromPoint(event.clientX, event.clientY)
+    ?.closest(".item");
+
+  if (!target || target === draggedItem) return;
+
+  const rect = target.getBoundingClientRect();
+  const after = event.clientY > rect.top + rect.height / 2;
+
+  if (after) {
+    target.after(draggedItem);
+  } else {
+    target.before(draggedItem);
+  }
+});
+    dragHandle.addEventListener("pointerup", async () => {
+  itemOrder = [...checklist.querySelectorAll(".item")]
+    .map(el => el.dataset.id);
+
+  try {
+    await setDoc(
+      settingsRef,
+      {
+        items: customItems,
+        itemOrder: itemOrder
+      },
+      {
+        merge: true
+      }
+    );
+  } catch (error) {
+    console.error("並び順の保存エラー:", error);
+  }
+
+  draggedItem = null;
+});
     if (item.warning) {
       div.classList.add("warning");
     }
