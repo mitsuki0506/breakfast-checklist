@@ -370,11 +370,8 @@ draggedItem.lastMoveTime = event.timeStamp;
   opacity: 1;
 }
 .item.dragging {
-  transform: scale(1.03);
-  box-shadow: 0 12px 28px rgba(0,0,0,0.22);
+  opacity: 0.8;
   z-index: 20;
-  opacity: 0.95;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .item.dragging .drag-handle {
