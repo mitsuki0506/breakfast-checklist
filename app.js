@@ -282,7 +282,7 @@ dragHandle.addEventListener("pointerdown", event => {
   div.classList.add("dragging");
 });
 
-   dragHandle.addEventListener("pointermove", event => {
+   document.addEventListener("pointermove", event => {
   if (!draggedItem) return;
 
   const target = document.elementFromPoint(
