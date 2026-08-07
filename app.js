@@ -280,9 +280,8 @@ dragHandle.addEventListener("pointerdown", event => {
   draggedItem = div;
   div.classList.add("dragging");
 });
-    if (item.warning) {
-      div.classList.add("warning");
-    }
+
+    
 
     const label =
       document.createElement("label");
