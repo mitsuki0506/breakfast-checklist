@@ -309,7 +309,7 @@ dragHandle.addEventListener("pointerleave", () => {
     clearTimeout(longPressTimer);
   }
 });
-   dragHandle.addEventListener("pointermove", event => {
+dragHandle.addEventListener("pointermove", event => {
   if (!longPressActivated) {
     const moveX = Math.abs(event.clientX - pressStartX);
     const moveY = Math.abs(event.clientY - pressStartY);
@@ -323,23 +323,29 @@ dragHandle.addEventListener("pointerleave", () => {
   }
 
   event.preventDefault();
+
   if (!draggedItem) return;
-const dragY = event.clientY - pressStartY;
-draggedItem.style.transform = `translateY(${dragY}px) scale(1.03)`;
-     
-  const target = document
-    .elementFromPoint(event.clientX, event.clientY)
-    ?.closest(".item");
 
-  if (!target || target === draggedItem) return;
+  const items = [...checklist.querySelectorAll(".item")]
+    .filter(el => el !== draggedItem);
 
-  const rect = target.getBoundingClientRect();
-  const after = event.clientY > rect.top + rect.height / 2;
+  let closestItem = null;
+  let closestOffset = Number.NEGATIVE_INFINITY;
 
-  if (after) {
-    target.after(draggedItem);
+  items.forEach(itemEl => {
+    const box = itemEl.getBoundingClientRect();
+    const offset = event.clientY - box.top - box.height / 2;
+
+    if (offset < 0 && offset > closestOffset) {
+      closestOffset = offset;
+      closestItem = itemEl;
+    }
+  });
+
+  if (closestItem) {
+    checklist.insertBefore(draggedItem, closestItem);
   } else {
-    target.before(draggedItem);
+    checklist.appendChild(draggedItem);
   }
 });
    dragHandle.addEventListener("pointerup", async () => {
