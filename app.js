@@ -158,10 +158,10 @@ const defaultItems = [
 let customItems = [];
 let deletedDefaultIds = [];
 function getItems() {
-  return [
-    ...defaultItems,
-    ...customItems
-  ];
+return [
+  ...defaultItems.filter(item => !deletedDefaultIds.includes(item.id)),
+  ...customItems
+];
 }
 const checklist = document.getElementById("checklist");
 const progress = document.getElementById("progress");
@@ -248,12 +248,9 @@ async function saveCheck(id, checked) {
 // 画面を作る
 function renderChecklist() {
 
-checklist.innerHTML = "";
+  checklist.innerHTML = "";
 
-const items = getItems();
-
-console.log("項目数", items.length);
-console.log(items);
+  const items = getItems();
 
   items.forEach(item => {
 
@@ -452,7 +449,7 @@ resetButton.addEventListener("click", async () => {
   if (!answer) {
     return;
   }
-const items = getItems();
+
   const emptyState = {};
 
   items.forEach(item => {
@@ -471,9 +468,7 @@ const items = getItems();
         merge: true
       }
     );
-state = emptyState;
-renderChecklist();
-updateProgress();
+
   } catch (error) {
 
     console.error(error);
@@ -512,7 +507,17 @@ addItemButton.addEventListener("click", async () => {
       {
         items: customItems
       },
+      {
+        merge: true
+      }
+    );
 
+  } catch (error) {
+
+    console.error(error);
+    alert("項目を追加できませんでした.");
+
+  }
 });
 onSnapshot(
   settingsRef,
@@ -520,13 +525,15 @@ onSnapshot(
   snapshot => {
 
     if (snapshot.exists()) {
+
       const data = snapshot.data();
 
       customItems = data.items || [];
-      deletedDefaultIds = data.deletedDefaultIds || [];
+deletedDefaultIds = data.deletedDefaultIds || [];
     } else {
+
       customItems = [];
-      deletedDefaultIds = [];
+deletedDefaultIds = [];
     }
 
     renderChecklist();
