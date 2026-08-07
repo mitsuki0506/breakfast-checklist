@@ -619,6 +619,7 @@ addItemButton.addEventListener("click", async () => {
     id: "custom_" + Date.now(),
     text: cleanText,
     custom: true
+    category: currentCategory
   };
 
   customItems.push(newItem);
@@ -639,12 +640,7 @@ addItemButton.addEventListener("click", async () => {
 }
 });
 
-    await setDoc(
-      settingsRef,
-      {
-        items: customItems
-      },
- );
+   
 onSnapshot(
   settingsRef,
 
