@@ -333,21 +333,19 @@ if (draggedItem) {
 
   if (!draggedItem) return;
 
-  const items = [...checklist.querySelectorAll(".item")]
-    .filter(el => el !== draggedItem);
+  const target = document
+  .elementFromPoint(event.clientX, event.clientY)
+  ?.closest(".item");
 
-  let closestItem = null;
-  let closestOffset = Number.NEGATIVE_INFINITY;
+if (target && target !== draggedItem) {
+  const rect = target.getBoundingClientRect();
 
-  items.forEach(itemEl => {
-    const box = itemEl.getBoundingClientRect();
-    const offset = event.clientY - box.top - box.height / 2;
-
-    if (offset < 0 && offset > closestOffset) {
-      closestOffset = offset;
-      closestItem = itemEl;
-    }
-  });
+  if (event.clientY < rect.top + rect.height / 2) {
+    checklist.insertBefore(draggedItem, target);
+  } else {
+    checklist.insertBefore(draggedItem, target.nextSibling);
+  }
+}
 
   if (closestItem) {
     checklist.insertBefore(draggedItem, closestItem);
