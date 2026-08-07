@@ -143,22 +143,12 @@ function getItems() {
     ...customItems
   ];
 
-  if (itemOrder.length !== 0) {
-    items.sort((a, b) => {
-      const aIndex = itemOrder.indexOf(a.id);
-      const bIndex = itemOrder.indexOf(b.id);
-
-      if (aIndex === -1 && bIndex === -1) return 0;
-      if (aIndex === -1) return 1;
-      if (bIndex === -1) return -1;
-
-      return aIndex - bIndex;
-    });
-  }
+  if (itemOrder.length !== 0) 
+    
 console.log("表示items", items);
 console.log("category", currentCategory);
   return items.filter(item => item.category === currentCategory)
-sort((a, b) => itemOrder.indexOf(a.id) - itemOrder.indexOf(b.id));
+.sort((a, b) => itemOrder.indexOf(a.id) - itemOrder.indexOf(b.id));
 const checklist = document.getElementById("checklist");
 const progress = document.getElementById("progress");
 const tabButtons = document.querySelectorAll(".tab-button");
@@ -167,6 +157,10 @@ tabButtons.forEach(button => {
   button.addEventListener("click", () => {
     currentCategory = button.dataset.category;
 
+    return items
+  .filter(item => item.category === currentCategory)
+  .sort((a, b) => itemOrder.indexOf(a.id) - itemOrder.indexOf(b.id));
+    
     tabButtons.forEach(btn => {
       btn.classList.remove("active");
     });
