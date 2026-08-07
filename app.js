@@ -307,7 +307,7 @@ dragHandle.addEventListener("pointerleave", () => {
   }
 });
 dragHandle.addEventListener("pointermove", event => {
-  if (event.timeStamp - (draggedItem?.lastMoveTime || 0) < 50) {
+ if (event.timeStamp - (draggedItem.lastMoveTime || 0) < 16) {
   return;
 }
 
