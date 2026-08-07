@@ -169,7 +169,6 @@ function getItems() {
     button.classList.add("active");
 
     renderChecklist();
-  });
 });
 let state = {};
 let draggedItem = null;
