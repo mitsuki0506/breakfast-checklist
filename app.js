@@ -624,8 +624,7 @@ addItemButton.addEventListener("click", async () => {
       {
         items: customItems
       },
- 
-  }
+ );
 onSnapshot(
   settingsRef,
 
