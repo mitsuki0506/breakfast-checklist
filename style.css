@@ -330,15 +330,25 @@ margin-left: auto;}
 .item {
     position: relative;
 }
+.item label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex: 1;
+    padding: 16px 8px;
+    min-width: 0;
+}
 
 .item label span {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    width: calc(100% - 180px);
+    width: auto;
+    max-width: 70%;
     text-align: center;
-    line-height: 1.45;
-}.item label input[type="checkbox"] {
-    position: absolute;
-    left: calc(50% - 110px);
+    word-break: normal;
+    overflow-wrap: break-word;
+}
+
+.item input[type="checkbox"] {
+    position: static;
+    flex-shrink: 0;
 }
