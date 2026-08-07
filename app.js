@@ -158,10 +158,12 @@ const defaultItems = [
 let customItems = [];
 let deletedDefaultIds = [];
 function getItems() {
-return [
-  ...defaultItems,
-  ...customItems
-];
+  return [
+    ...defaultItems.filter(
+      item => !deletedDefaultIds.includes(item.id)
+    ),
+    ...customItems
+  ];
 }
 const checklist = document.getElementById("checklist");
 const progress = document.getElementById("progress");
