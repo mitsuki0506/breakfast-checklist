@@ -437,21 +437,24 @@ itemEl.addEventListener("dragend", async () => {
     settingsRef,
     {
       itemOrder: itemOrder
-    },
-    {
-      merge: true
-    }
-  );
+    await setDoc(
+  settingsRef,
+  {
+    itemOrder: itemOrder
+  },
+  {
+    merge: true
+  }
+);
 
-  draggedItem = null;
+draggedItem = null;
 });
-  const handle = itemEl.querySelector(".drag-handle");
 
+const handle = itemEl.querySelector(".drag-handle");
 handle.addEventListener("pointerdown", event => {
   draggedItem = itemEl;
   handle.setPointerCapture(event.pointerId);
 });
-
 handle.addEventListener("pointermove", event => {
   if (!draggedItem) return;
 
