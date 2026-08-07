@@ -271,9 +271,10 @@ function renderChecklist() {
 div.dataset.id = item.id;
 div.draggable = false;
     
-    const dragHandle = document.createElement("span");
+ const dragHandle = document.createElement("span");
 dragHandle.textContent = "☰";
 dragHandle.className = "drag-handle";
+    
 div.appendChild(dragHandle);
     let longPressTimer;
 let pressStartX = 0;
