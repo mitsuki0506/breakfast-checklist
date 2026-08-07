@@ -36,8 +36,10 @@ h1{
 }
 
 .item{
-    border-bottom:1px solid #eee;
-    transition:.2s;
+  border-bottom:1px solid #eee;
+  transition:.2s;
+  display:flex;
+  align-items:center;
 }
 
 .item label{
