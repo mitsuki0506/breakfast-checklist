@@ -380,7 +380,8 @@ label.appendChild(text);
   deleteButton.className = "delete-button";
   deleteButton.textContent = "削除";
 dartCheck.addEventListener("click", () => {
-  checkbox.click();
+  checkbox.checked = !checkbox.checked;
+  checkbox.dispatchEvent(new Event("change"));
 });
   deleteButton.addEventListener("click", async event => {
 
