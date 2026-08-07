@@ -289,6 +289,7 @@ dragHandle.addEventListener("pointerdown", event => {
   longPressTimer = setTimeout(() => {
     longPressActivated = true;
     draggedItem = div;
+    div.classList.add("dragging");
 
     if (navigator.vibrate) {
       navigator.vibrate(50);
@@ -363,6 +364,7 @@ dragHandle.addEventListener("pointerleave", () => {
     console.error("並び順の保存エラー:", error);
   }
 
+     div.classList.remove("dragging");
   draggedItem = null;
 });
     if (item.warning) {
