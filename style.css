@@ -308,12 +308,22 @@ margin-left: auto;}
     width: 100%;
 }
 
-.item input[type="checkbox"] {
-    position: absolute;
-    left: 16px;
-}
+
 
 .item label span {
     width: 100%;
+    text-align: center;
+}
+.item label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex: 1;
+    text-align: center;
+}
+
+.item label span {
+    width: auto;
     text-align: center;
 }
