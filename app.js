@@ -308,20 +308,20 @@ dragHandle.addEventListener("pointerleave", () => {
     clearTimeout(longPressTimer);
   }
 });
-    dragHandle.addEventListener("pointermove", event => {
-      if (!longPressActivated) {
-  const moveX = Math.abs(event.clientX - pressStartX);
-  const moveY = Math.abs(event.clientY - pressStartY);
+   dragHandle.addEventListener("pointermove", event => {
+  if (!longPressActivated) {
+    const moveX = Math.abs(event.clientX - pressStartX);
+    const moveY = Math.abs(event.clientY - pressStartY);
 
-  if (moveX > 10 || moveY > 10) {
-  clearTimeout(longPressTimer);
-    longPressActivated = false;
-  longPressTimer = null;
-  longPressActivated = false;
-}
+    if (moveX > 20 || moveY > 20) {
+      clearTimeout(longPressTimer);
+      longPressTimer = null;
+    }
 
-  return;
-}
+    return;
+  }
+
+  event.preventDefault();
   if (!draggedItem) return;
 
   const target = document
