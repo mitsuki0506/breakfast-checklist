@@ -327,3 +327,18 @@ margin-left: auto;}
     width: auto;
     text-align: center;
 }
+.item {
+    position: relative;
+}
+
+.item label span {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 180px);
+    text-align: center;
+    line-height: 1.45;
+}.item label input[type="checkbox"] {
+    position: absolute;
+    left: calc(50% - 110px);
+}
