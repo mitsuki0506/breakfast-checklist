@@ -67,10 +67,14 @@ flex:1;}
 }
 .dart-check {
     display: none;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
     font-size: 26px;
     line-height: 1;
-    flex: 0 0 auto;
-    }
+    pointer-events: none;
+}
 
 
 .item span{
@@ -122,6 +126,7 @@ flex:1;}
     .item label{
         font-size:16px;
         padding:15px 6px;
+   position: relative; 
     }
 }.reset-button{
     width:100%;
@@ -270,7 +275,9 @@ h1 {
   cursor: pointer;
   accent-color: #ffffff;
 }
-
+.item input[type="checkbox"]:checked {
+    opacity: 0;
+}
 .drag-handle {
   width: 30px;
   font-size: 21px;
