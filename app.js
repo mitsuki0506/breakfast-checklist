@@ -274,7 +274,7 @@ div.draggable = false;
 dragHandle.className = "drag-handle";
 dragHandle.textContent = "☰";
 div.appendChild(dragHandle);
-   dragHandle.addEventListener("pointerdown", event => {
+ dragHandle.addEventListener("pointerdown", async event => {
   event.stopPropagation();
 
   draggedItem = div;
