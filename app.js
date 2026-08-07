@@ -157,11 +157,26 @@ const defaultItems = [
 ];
 let customItems = [];
 let deletedDefaultIds = [];
+let itemOrder = [];
 function getItems() {
-return [
-  ...defaultItems.filter(item => !deletedDefaultIds.includes(item.id)),
-  ...customItems
-];
+  const items = [
+    ...defaultItems.filter(item => !deletedDefaultIds.includes(item.id)),
+    ...customItems
+  ];
+
+  if (itemOrder.length === 0) {
+    return items;
+  }
+
+  return items.sort((a, b) => {
+    const aIndex = itemOrder.indexOf(a.id);
+    const bIndex = itemOrder.indexOf(b.id);
+
+    if (aIndex === -1) return 1;
+    if (bIndex === -1) return -1;
+
+    return aIndex - bIndex;
+  });
 }
 const checklist = document.getElementById("checklist");
 const progress = document.getElementById("progress");
@@ -277,7 +292,11 @@ function renderChecklist() {
       document.createElement("div");
 
     div.className = "item";
-
+div.dataset.id = item.id;
+    const dragHandle = document.createElement("span");
+dragHandle.className = "drag-handle";
+dragHandle.textContent = "☰";
+div.appendChild(dragHandle);
     if (item.warning) {
       div.classList.add("warning");
     }
@@ -399,10 +418,94 @@ deletedDefaultIds: deletedDefaultIds
         );
       }
     );
-
+div.dataset.id = item.id;
     checklist.appendChild(div);
   });
+let draggedItem = null;
 
+checklist.querySelectorAll(".item").forEach(itemEl => {
+  itemEl.draggable = true;
+
+  itemEl.addEventListener("dragstart", () => {
+    draggedItem = itemEl;
+  });
+itemEl.addEventListener("dragend", async () => {
+  itemOrder = [...checklist.querySelectorAll(".item")]
+    .map(el => el.dataset.id);
+
+  await setDoc(
+    settingsRef,
+    {
+      itemOrder: itemOrder
+    },
+    {
+      merge: true
+    }
+  );
+
+  draggedItem = null;
+});
+  const handle = itemEl.querySelector(".drag-handle");
+
+handle.addEventListener("pointerdown", event => {
+  draggedItem = itemEl;
+  handle.setPointerCapture(event.pointerId);
+});
+
+handle.addEventListener("pointermove", event => {
+  if (!draggedItem) return;
+
+  const target = document
+    .elementFromPoint(event.clientX, event.clientY)
+    ?.closest(".item");
+
+  if (!target || target === draggedItem) return;
+
+  const rect = target.getBoundingClientRect();
+  const after = event.clientY > rect.top + rect.height / 2;
+
+  if (after) {
+    target.after(draggedItem);
+  } else {
+    target.before(draggedItem);
+  }
+});
+
+handle.addEventListener("pointerup", async () => {
+  if (!draggedItem) return;
+
+  itemOrder = [...checklist.querySelectorAll(".item")]
+    .map(el => el.dataset.id);
+
+  await setDoc(
+    settingsRef,
+    {
+      itemOrder: itemOrder
+    },
+    {
+      merge: true
+    }
+  );
+
+  draggedItem = null;
+});
+  itemEl.addEventListener("dragover", event => {
+    event.preventDefault();
+
+    const target = event.currentTarget;
+
+    if (!draggedItem || draggedItem === target) return;
+
+    const rect = target.getBoundingClientRect();
+    const after = event.clientY > rect.top + rect.height / 2;
+
+    if (after) {
+      target.after(draggedItem);
+    } else {
+      target.before(draggedItem);
+    }
+  });
+});
   updateProgress();
 }
 
@@ -532,11 +635,12 @@ onSnapshot(
 
       customItems = data.items || [];
 deletedDefaultIds = data.deletedDefaultIds || [];
+      itemOrder = data.itemOrder || [];
     } else {
 
       customItems = [];
 deletedDefaultIds = [];
-    }
+   itemOrder = []; }
 
     renderChecklist();
   },
