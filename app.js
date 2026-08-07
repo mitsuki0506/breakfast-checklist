@@ -6,29 +6,30 @@ import {
 } from "./firebase.js";
 
 const defaultItems = [
-  { id: "greeting", text: "挨拶をする" },
-  { id: "haccp_phone", text: "携帯でHACCPをする" },
-  { id: "haccp_paper", text: "HACCPの紙を書く" },
+  { id: "greeting", text: "挨拶をする", category: "準備" },
+{ id: "haccp_phone", text: "携帯でHACCPをする", category: "準備" },
+{ id: "haccp_paper", text: "HACCPの紙を書く", category: "準備" },
 
   {
-    id: "order",
-    text: "パン、プリンの発注（ホワイトボード確認）"
-  },
-
-  {
-    id: "graham_banana",
-    text: "明日分のグラハム、バナナケーキ"
-  },
-
-  {
-    id: "butter",
-    text: "明日分のバター"
-  },
-
-  {
-    id: "cart1",
-    text: "1台目カート揃っているか"
-  },
+  id: "order",
+  text: "パン、プリンの発注（ホワイトボード確認）",
+  category: "発注"
+},
+{
+  id: "graham_banana",
+  text: "明日分のグラハム、バナナケーキ",
+  category: "発注"
+},
+{
+  id: "butter",
+  text: "明日分のバター",
+  category: "発注"
+},
+{
+  id: "cart1",
+  text: "1台目カート揃っているか",
+  category: "準備"
+},
 
  
 
