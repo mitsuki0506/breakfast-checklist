@@ -618,7 +618,7 @@ addItemButton.addEventListener("click", async () => {
   const newItem = {
     id: "custom_" + Date.now(),
     text: cleanText,
-    custom: true
+    custom: true,
     category: currentCategory
   };
 
