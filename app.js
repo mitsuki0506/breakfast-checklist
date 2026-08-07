@@ -449,7 +449,7 @@ resetButton.addEventListener("click", async () => {
   if (!answer) {
     return;
   }
-
+const items = getItems();
   const emptyState = {};
 
   items.forEach(item => {
@@ -468,7 +468,9 @@ resetButton.addEventListener("click", async () => {
         merge: true
       }
     );
-
+state = emptyState;
+renderChecklist();
+updateProgress();
   } catch (error) {
 
     console.error(error);
