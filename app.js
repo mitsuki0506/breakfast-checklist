@@ -155,7 +155,8 @@ function getItems() {
       return aIndex - bIndex;
     });
   }
-
+console.log("表示items", items);
+console.log("category", currentCategory);
   return items.filter(item => item.category === currentCategory);
 }
 const checklist = document.getElementById("checklist");
