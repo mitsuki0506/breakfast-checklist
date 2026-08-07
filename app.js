@@ -508,9 +508,13 @@ div.addEventListener("dragover", event => {
   const after = event.clientY > rect.top + rect.height / 2;
 
   if (after) {
-    div.after(draggedItem);
+    if (div.nextSibling !== draggedItem) {
+      div.after(draggedItem);
+    }
   } else {
-    div.before(draggedItem);
+    if (div.previousSibling !== draggedItem) {
+      div.before(draggedItem);
+    }
   }
 });
     div.addEventListener("dragend", async () => {
