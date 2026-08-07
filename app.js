@@ -161,7 +161,7 @@ function getItems() {
   return items.filter(
     item => item.category === currentCategory
  );
- } 
+  
     tabButtons.forEach(btn => {
       btn.classList.remove("active");
     });
