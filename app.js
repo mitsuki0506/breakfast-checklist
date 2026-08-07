@@ -530,7 +530,7 @@ onSnapshot(
 
       const data = snapshot.data();
 
-      customItems = data.items || [];
+     const data = snapshot.data();
 deletedDefaultIds = data.deletedDefaultIds || [];
     } else {
 
