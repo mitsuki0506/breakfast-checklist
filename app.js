@@ -280,10 +280,7 @@ div.appendChild(dragHandle);
   draggedItem = div;
   div.classList.add("dragging");
 });
-  clearTimeout(longPressTimer);
 
-  // 長押しが成立していなければ何もしない
-  if (!draggedItem) return;
 
   itemOrder = [...checklist.querySelectorAll(".item")]
     .map(el => el.dataset.id);
