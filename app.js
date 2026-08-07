@@ -270,9 +270,7 @@ function renderChecklist() {
     div.className = "item";
 div.dataset.id = item.id;
 div.draggable = false;
-    const dragHandle = document.createElement("span");
-dragHandle.className = "drag-handle";
-dragHandle.textContent = "☰";
+    
     const dragHandle = document.createElement("span");
 dragHandle.textContent = "☰";
 dragHandle.className = "drag-handle";
