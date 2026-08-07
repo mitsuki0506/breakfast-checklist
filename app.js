@@ -134,30 +134,47 @@ const defaultItems = [
 let customItems = [];
 let deletedDefaultIds = [];
 let itemOrder = [];
+
+let currentCategory = "準備";
+
 function getItems() {
   const items = [
     ...defaultItems.filter(item => !deletedDefaultIds.includes(item.id)),
     ...customItems
   ];
 
-  if (itemOrder.length === 0) {
-    return items;
+  if (itemOrder.length !== 0) {
+    items.sort((a, b) => {
+      const aIndex = itemOrder.indexOf(a.id);
+      const bIndex = itemOrder.indexOf(b.id);
+
+      if (aIndex === -1 && bIndex === -1) return 0;
+      if (aIndex === -1) return 1;
+      if (bIndex === -1) return -1;
+
+      return aIndex - bIndex;
+    });
   }
 
-  return items.sort((a, b) => {
-    const aIndex = itemOrder.indexOf(a.id);
-    const bIndex = itemOrder.indexOf(b.id);
-
-    if (aIndex === -1 && bIndex === -1) return 0;
-    if (aIndex === -1) return 1;
-    if (bIndex === -1) return -1;
-
-    return aIndex - bIndex;
-  });
+  return items.filter(item => item.category === currentCategory);
 }
 const checklist = document.getElementById("checklist");
 const progress = document.getElementById("progress");
+const tabButtons = document.querySelectorAll(".tab-button");
 
+tabButtons.forEach(button => {
+  button.addEventListener("click", () => {
+    currentCategory = button.dataset.category;
+
+    tabButtons.forEach(btn => {
+      btn.classList.remove("active");
+    });
+
+    button.classList.add("active");
+
+    renderChecklist();
+  });
+});
 let state = {};
 let draggedItem = null;
 // 今日の日付を取得
