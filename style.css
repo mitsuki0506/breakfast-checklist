@@ -355,6 +355,19 @@ margin-left: auto;}
     border-color: #2563eb;
 }
 .drag-handle {
-  touch-action: pan-y;
-  cursor: grab;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: none;
+}
+.item.dragging {
+  transform: scale(1.03);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.22);
+  z-index: 20;
+  opacity: 0.95;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.item.dragging .drag-handle {
+  opacity: 1;
 }
