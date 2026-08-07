@@ -324,7 +324,9 @@ dragHandle.addEventListener("pointerleave", () => {
 
   event.preventDefault();
   if (!draggedItem) return;
-
+const dragY = event.clientY - pressStartY;
+draggedItem.style.transform = `translateY(${dragY}px) scale(1.03)`;
+     
   const target = document
     .elementFromPoint(event.clientX, event.clientY)
     ?.closest(".item");
@@ -364,7 +366,8 @@ dragHandle.addEventListener("pointerleave", () => {
     console.error("並び順の保存エラー:", error);
   }
 
-     div.classList.remove("dragging");
+   div.style.transform = "";
+div.classList.remove("dragging");
   draggedItem = null;
 });
     if (item.warning) {
