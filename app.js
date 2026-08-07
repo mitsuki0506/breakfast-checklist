@@ -157,17 +157,33 @@ const defaultItems = [
 ];
 let customItems = [];
 let deletedDefaultIds = [];
+let itemOrder = [];
 function getItems() {
-return [
-  ...defaultItems.filter(item => !deletedDefaultIds.includes(item.id)),
-  ...customItems
-];
+  const items = [
+    ...defaultItems.filter(item => !deletedDefaultIds.includes(item.id)),
+    ...customItems
+  ];
+
+  if (itemOrder.length === 0) {
+    return items;
+  }
+
+  return items.sort((a, b) => {
+    const aIndex = itemOrder.indexOf(a.id);
+    const bIndex = itemOrder.indexOf(b.id);
+
+    if (aIndex === -1 && bIndex === -1) return 0;
+    if (aIndex === -1) return 1;
+    if (bIndex === -1) return -1;
+
+    return aIndex - bIndex;
+  });
 }
 const checklist = document.getElementById("checklist");
 const progress = document.getElementById("progress");
 
 let state = {};
-
+let draggedItem = null;
 // 今日の日付を取得
 function getToday() {
   const now = new Date();
@@ -277,7 +293,15 @@ function renderChecklist() {
       document.createElement("div");
 
     div.className = "item";
-
+div.dataset.id = item.id;
+div.draggable = true;
+    const dragHandle = document.createElement("span");
+dragHandle.className = "drag-handle";
+dragHandle.textContent = "☰";
+div.appendChild(dragHandle);
+    div.addEventListener("dragstart", () => {
+  draggedItem = div;
+});
     if (item.warning) {
       div.classList.add("warning");
     }
@@ -399,7 +423,41 @@ deletedDefaultIds: deletedDefaultIds
         );
       }
     );
+div.addEventListener("dragover", event => {
+  event.preventDefault();
 
+  if (!draggedItem || draggedItem === div) return;
+
+  const rect = div.getBoundingClientRect();
+  const after = event.clientY > rect.top + rect.height / 2;
+
+  if (after) {
+    div.after(draggedItem);
+  } else {
+    div.before(draggedItem);
+  }
+});
+    div.addEventListener("dragend", async () => {
+itemOrder = [...checklist.querySelectorAll(".item")]
+  .map(el => el.dataset.id);
+
+  try {
+    await setDoc(
+      settingsRef,
+     {
+  items: customItems,
+  itemOrder: itemOrder
+},
+      {
+        merge: true
+      }
+    );
+  } catch (error) {
+    console.error("並び順の保存エラー:", error);
+  }
+
+  draggedItem = null;
+});
     checklist.appendChild(div);
   });
 
@@ -502,40 +560,48 @@ addItemButton.addEventListener("click", async () => {
 
   customItems.push(newItem);
 
-  try {
+ try {
+  await setDoc(
+    settingsRef,
+    {
+      items: customItems
+    },
+    {
+      merge: true
+    }
+  );
+} catch (error) {
+  console.error(error);
+  alert("項目を追加できませんでした。");
+}
+});
 
     await setDoc(
       settingsRef,
       {
         items: customItems
       },
-      {
-        merge: true
-      }
-    );
-
-  } catch (error) {
-
-    console.error(error);
-    alert("項目を追加できませんでした.");
-
+ 
   }
-});
 onSnapshot(
   settingsRef,
 
   snapshot => {
 
     if (snapshot.exists()) {
-
       const data = snapshot.data();
 
-      customItems = data.items || [];
+customItems = data.items || [];
+itemOrder = data.itemOrder || [];
 deletedDefaultIds = data.deletedDefaultIds || [];
     } else {
-
       customItems = [];
-deletedDefaultIds = [];
+      } else {
+  customItems = [];
+  itemOrder = [];
+  deletedDefaultIds = [];
+}
+      deletedDefaultIds = [];
     }
 
     renderChecklist();
