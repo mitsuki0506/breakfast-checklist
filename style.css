@@ -65,16 +65,13 @@ flex:1;}
     cursor: pointer;
     position: relative;
 }
-
-.item input[type="checkbox"]:checked::after {
-    content: "🎯";
-    position: absolute;
-    font-size: 23px;
+.dart-check {
+    display: none;
+    font-size: 26px;
     line-height: 1;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
+    flex: 0 0 auto;
+    }
+
 
 .item span{
     flex:1;
