@@ -280,6 +280,7 @@ dragHandle.addEventListener("pointerdown", event => {
   event.preventDefault();
 
   dragHandle.setPointerCapture(event.pointerId);
+  
   draggedItem = div;
   div.classList.add("dragging");
 });
