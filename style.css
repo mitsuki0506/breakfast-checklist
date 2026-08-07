@@ -241,6 +241,8 @@ margin-left: auto;}
   flex-shrink: 0;
   touch-action: none;
   user-select: none;
+    touch-action: none;
+cursor: grab;
 }
 .item {
   background: #1a1a1c;
