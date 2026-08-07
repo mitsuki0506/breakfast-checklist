@@ -296,3 +296,24 @@ margin-left: auto;}
 .delete-button:hover {
   opacity: 1;
 }
+.item {
+    position: relative;
+}
+
+.item label {
+    justify-content: center;
+    text-align: center;
+}.item label {
+    position: relative;
+    width: 100%;
+}
+
+.item input[type="checkbox"] {
+    position: absolute;
+    left: 16px;
+}
+
+.item label span {
+    width: 100%;
+    text-align: center;
+}
