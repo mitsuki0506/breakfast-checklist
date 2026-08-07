@@ -517,14 +517,13 @@ onSnapshot(
   snapshot => {
 
     if (snapshot.exists()) {
-
       const data = snapshot.data();
-customItems = data.items || [];
-deletedDefaultIds = data.deletedDefaultIds || [];
-    } else {
 
+      customItems = data.items || [];
+      deletedDefaultIds = data.deletedDefaultIds || [];
+    } else {
       customItems = [];
-deletedDefaultIds = [];
+      deletedDefaultIds = [];
     }
 
     renderChecklist();
