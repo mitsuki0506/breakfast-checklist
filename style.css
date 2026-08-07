@@ -315,21 +315,34 @@ button {
     min-height: 100vh;
   }
 
-  .item {
-    min-height: 60px;
-    padding: 8px 4px;
-    gap: 8px;
-  }
+ .item {
+  min-height: 72px;
+  padding: 14px 12px;
+  gap: 12px;
+
+  margin-bottom: 10px;
+  border: 1px solid #333;
+  border-radius: 14px;
+
+  background: #1c1c1c;
+}
 
   .item label {
-    font-size: 15px;
-  }
+  font-size: 16px;
+  line-height: 1.55;
+  flex: 1;
+  word-break: normal;
+}
 
   .drag-handle {
-    width: 32px;
-  }
+  width: 24px;
+  flex-shrink: 0;
+  opacity: 0.65;
+}
 
   .delete-button {
-    padding: 8px 4px;
+    padding: 8px;
+  flex-shrink: 0;
+  font-size: 14px;
   }
 }
