@@ -281,7 +281,25 @@ dragHandle.addEventListener("pointerdown", event => {
   div.classList.add("dragging");
 });
 
-    
+   dragHandle.addEventListener("pointermove", event => {
+  if (!draggedItem) return;
+
+  const target = document.elementFromPoint(
+    event.clientX,
+    event.clientY
+  );
+
+  const item = target?.closest(".item");
+
+  if (item && item !== draggedItem) {
+    checklist.insertBefore(draggedItem, item);
+  }
+});
+
+dragHandle.addEventListener("pointerup", () => {
+  draggedItem.classList.remove("dragging");
+  draggedItem = null;
+}); 
 
     const label =
       document.createElement("label");
