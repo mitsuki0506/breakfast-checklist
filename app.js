@@ -291,9 +291,6 @@ dragHandle.addEventListener("pointerdown", event => {
     draggedItem = div;
     div.classList.add("dragging");
 
-    if (navigator.vibrate) {
-      navigator.vibrate(50);
-    }
   }, 500);
 });
     dragHandle.addEventListener("pointerup", () => {
