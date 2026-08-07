@@ -277,6 +277,7 @@ dragHandle.textContent = "☰";
 div.appendChild(dragHandle);
 dragHandle.addEventListener("pointerdown", event => {
   event.stopPropagation();
+  event.preventDefault();
 
   dragHandle.setPointerCapture(event.pointerId);
   draggedItem = div;
