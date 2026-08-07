@@ -449,7 +449,7 @@ resetButton.addEventListener("click", async () => {
   if (!answer) {
     return;
   }
-　const items = getItems();
+const items = getItems();
   const emptyState = {};
 
   items.forEach(item => {
