@@ -292,9 +292,15 @@ dragHandle.addEventListener("pointerdown", event => {
 
   const item = target?.closest(".item");
 
-  if (item && item !== draggedItem) {
+if (item && item !== draggedItem) {
+  const rect = item.getBoundingClientRect();
+
+  if (event.clientY < rect.top + rect.height / 2) {
     checklist.insertBefore(draggedItem, item);
+  } else {
+    checklist.insertBefore(draggedItem, item.nextSibling);
   }
+}
 });
 
 dragHandle.addEventListener("pointerup", () => {
