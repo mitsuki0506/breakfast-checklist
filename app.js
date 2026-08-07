@@ -277,9 +277,6 @@ dragHandle.className = "drag-handle";
     
 div.appendChild(dragHandle);
     let longPressTimer;
-let pressStartX = 0;
-let pressStartY = 0;
-let longPressActivated = false;
 dragHandle.addEventListener("pointerdown", event => {
 
   event.preventDefault();
