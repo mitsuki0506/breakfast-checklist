@@ -159,7 +159,7 @@ let customItems = [];
 let deletedDefaultIds = [];
 function getItems() {
 return [
-  ...defaultItems.filter(item => !deletedDefaultIds.includes(item.id)),
+  ...defaultItems,
   ...customItems
 ];
 }
