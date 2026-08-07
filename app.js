@@ -632,20 +632,16 @@ onSnapshot(
   snapshot => {
 
     if (snapshot.exists()) {
-      const data = snapshot.data();
+  const data = snapshot.data();
 
-customItems = data.items || [];
-itemOrder = data.itemOrder || [];
-deletedDefaultIds = data.deletedDefaultIds || [];
-    } else {
-      customItems = [];
-      } else {
+  customItems = data.items || [];
+  itemOrder = data.itemOrder || [];
+  deletedDefaultIds = data.deletedDefaultIds || [];
+} else {
   customItems = [];
   itemOrder = [];
   deletedDefaultIds = [];
 }
-      deletedDefaultIds = [];
-    }
 
     renderChecklist();
   },
