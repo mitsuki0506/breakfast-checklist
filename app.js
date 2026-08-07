@@ -310,6 +310,13 @@ dragHandle.addEventListener("pointerleave", () => {
   }
 });
 dragHandle.addEventListener("pointermove", event => {
+  if (event.timeStamp - (draggedItem?.lastMoveTime || 0) < 50) {
+  return;
+}
+
+if (draggedItem) {
+  draggedItem.lastMoveTime = event.timeStamp;
+}
   if (!longPressActivated) {
     const moveX = Math.abs(event.clientX - pressStartX);
     const moveY = Math.abs(event.clientY - pressStartY);
