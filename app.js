@@ -157,33 +157,17 @@ const defaultItems = [
 ];
 let customItems = [];
 let deletedDefaultIds = [];
-let itemOrder = [];
 function getItems() {
-  const items = [
-    ...defaultItems.filter(item => !deletedDefaultIds.includes(item.id)),
-    ...customItems
-  ];
-
-  if (itemOrder.length === 0) {
-    return items;
-  }
-
-  return items.sort((a, b) => {
-    const aIndex = itemOrder.indexOf(a.id);
-    const bIndex = itemOrder.indexOf(b.id);
-
-    if (aIndex === -1 && bIndex === -1) return 0;
-    if (aIndex === -1) return 1;
-    if (bIndex === -1) return -1;
-
-    return aIndex - bIndex;
-  });
+return [
+  ...defaultItems.filter(item => !deletedDefaultIds.includes(item.id)),
+  ...customItems
+];
 }
 const checklist = document.getElementById("checklist");
 const progress = document.getElementById("progress");
 
 let state = {};
-let draggedItem = null;
+
 // 今日の日付を取得
 function getToday() {
   const now = new Date();
@@ -293,61 +277,8 @@ function renderChecklist() {
       document.createElement("div");
 
     div.className = "item";
-div.dataset.id = item.id;
-div.draggable = true;
- const dragHandle = document.createElement("span");
-dragHandle.className = "drag-handle";
-dragHandle.textContent = "☰";
-div.appendChild(dragHandle);   
 
-div.addEventListener("dragstart", () => {
-  draggedItem = div;
-});
-dragHandle.addEventListener("pointerdown", event => {
-  draggedItem = div;
-  dragHandle.setPointerCapture(event.pointerId);
-});
-    dragHandle.addEventListener("pointermove", event => {
-  if (!draggedItem) return;
-
-  const target = document
-    .elementFromPoint(event.clientX, event.clientY)
-    ?.closest(".item");
-
-  if (!target || target === draggedItem) return;
-
-  const rect = target.getBoundingClientRect();
-  const after = event.clientY > rect.top + rect.height / 2;
-
-  if (after) {
-    target.after(draggedItem);
-  } else {
-    target.before(draggedItem);
-  }
-});
-    dragHandle.addEventListener("pointerup", async () => {
-  itemOrder = [...checklist.querySelectorAll(".item")]
-    .map(el => el.dataset.id);
-
-  try {
-    await setDoc(
-      settingsRef,
-      {
-        items: customItems,
-        itemOrder: itemOrder
-      },
-      {
-        merge: true
-      }
-    );
-  } catch (error) {
-    console.error("並び順の保存エラー:", error);
-  }
-
-  draggedItem = null;
-});
-if (item.warning) {
-  
+    if (item.warning) {
       div.classList.add("warning");
     }
 
@@ -360,18 +291,14 @@ if (item.warning) {
     checkbox.type = "checkbox";
     checkbox.checked =
       state[item.id] === true;
-const dartCheck = document.createElement("span");
-dartCheck.className = "dart-check";
-dartCheck.textContent = "○";
-    dartCheck.style.cursor = "pointer";
-   dartCheck.textContent = checkbox.checked ? "🎯" : "○";
+
     const text =
       document.createElement("span");
 
     text.textContent = item.text;
 
-   label.appendChild(dartCheck);
-label.appendChild(text);
+    label.appendChild(checkbox);
+    label.appendChild(text);
 
     div.appendChild(label);
 
@@ -379,9 +306,7 @@ label.appendChild(text);
 
   deleteButton.className = "delete-button";
   deleteButton.textContent = "削除";
-label.appendChild(checkbox);
-label.appendChild(dartCheck);
-label.appendChild(text);
+
   deleteButton.addEventListener("click", async event => {
 
     event.preventDefault();
@@ -423,7 +348,6 @@ deletedDefaultIds: deletedDefaultIds
     checkbox.addEventListener(
       "change",
       async () => {
-        dartCheck.style.display = checkbox.checked ? "inline" : "none";
 
         // 最終確認
         if (
@@ -475,41 +399,7 @@ deletedDefaultIds: deletedDefaultIds
         );
       }
     );
-div.addEventListener("dragover", event => {
-  event.preventDefault();
 
-  if (!draggedItem || draggedItem === div) return;
-
-  const rect = div.getBoundingClientRect();
-  const after = event.clientY > rect.top + rect.height / 2;
-
-  if (after) {
-    div.after(draggedItem);
-  } else {
-    div.before(draggedItem);
-  }
-});
-   div.addEventListener("dragend", async () => {
-  itemOrder = [...checklist.querySelectorAll(".item")]
-  .map(el => el.dataset.id);
-
-  try {
-    await setDoc(
-      settingsRef,
-      {
-  items: customItems,
-  itemOrder: itemOrder
-},
-      {
-        merge: true
-      }
-    );
-  } catch (error) {
-    console.error("並び順の保存エラー:", error);
-  }
-
-  draggedItem = null;
-});
     checklist.appendChild(div);
   });
 
@@ -612,20 +502,14 @@ addItemButton.addEventListener("click", async () => {
 
   customItems.push(newItem);
 
- try {
-  await setDoc(
-    settingsRef,
-    {
-      items: customItems
-    },
-    {
-      merge: true
-    }
-  );
-} catch (error) {
-  console.error(error);
-  alert("項目を追加できませんでした。");
-}
+  try {
+
+    await setDoc(
+      settingsRef,
+      {
+        items: customItems
+      },
+
 });
 onSnapshot(
   settingsRef,
@@ -636,11 +520,9 @@ onSnapshot(
       const data = snapshot.data();
 
       customItems = data.items || [];
-itemOrder = data.itemOrder || [];
-deletedDefaultIds = data.deletedDefaultIds || [];
+      deletedDefaultIds = data.deletedDefaultIds || [];
     } else {
       customItems = [];
-      itemOrder = [];
       deletedDefaultIds = [];
     }
 
