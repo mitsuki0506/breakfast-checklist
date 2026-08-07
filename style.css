@@ -50,7 +50,7 @@ h1{
     cursor:pointer;
     font-size:17px;
     line-height:1.45;
-}
+flex:1;}
 
 .item input[type="checkbox"]{
     width:24px;
