@@ -283,10 +283,12 @@ dragHandle.addEventListener("pointerdown", event => {
   pressStartY = event.clientY;
   longPressActivated = false;
 
+  // 指を置いた瞬間から追跡する
+  dragHandle.setPointerCapture(event.pointerId);
+
   longPressTimer = setTimeout(() => {
     longPressActivated = true;
     draggedItem = div;
-    dragHandle.setPointerCapture(event.pointerId);
 
     if (navigator.vibrate) {
       navigator.vibrate(50);
@@ -312,8 +314,11 @@ dragHandle.addEventListener("pointerleave", () => {
   const moveY = Math.abs(event.clientY - pressStartY);
 
   if (moveX > 10 || moveY > 10) {
-    clearTimeout(longPressTimer);
-  }
+  clearTimeout(longPressTimer);
+    longPressActivated = false;
+  longPressTimer = null;
+  longPressActivated = false;
+}
 
   return;
 }
