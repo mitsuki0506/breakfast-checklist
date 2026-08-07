@@ -278,25 +278,11 @@ dragHandle.className = "drag-handle";
 div.appendChild(dragHandle);
     let longPressTimer;
 dragHandle.addEventListener("pointerdown", event => {
+  event.stopPropagation();
 
-  pressStartX = event.clientX;
-  pressStartY = event.clientY;
-  longPressActivated = false;
-
-  // 指を置いた瞬間から追跡する
-
-
-  longPressTimer = setTimeout(() => {
-    longPressActivated = true;
-    draggedItem = div;
+  draggedItem = div;
   div.classList.add("dragging");
-
-  dragHandle.setPointerCapture(event.pointerId);
-
-}, 500);
-    div.classList.add("dragging");
-
-  }, 500);
+});
 });
     dragHandle.addEventListener("pointerup", () => {
   clearTimeout(longPressTimer);
