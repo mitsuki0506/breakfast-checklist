@@ -280,31 +280,6 @@ dragHandle.addEventListener("pointerdown", event => {
   draggedItem = div;
   div.classList.add("dragging");
 });
-  clearTimeout(longPressTimer);
-
-  // 長押しが成立していなければ何もしない
-  if (!draggedItem) return;
-
-  itemOrder = [...checklist.querySelectorAll(".item")]
-    .map(el => el.dataset.id);
-
-  try {
-    await setDoc(
-      settingsRef,
-      {
-        items: customItems,
-        itemOrder: itemOrder
-      },
-      {
-        merge: true
-      }
-    );
-  } catch (error) {
-    console.error("並び順の保存エラー:", error);
-  }
-
-  draggedItem = null;
-});
     if (item.warning) {
       div.classList.add("warning");
     }
