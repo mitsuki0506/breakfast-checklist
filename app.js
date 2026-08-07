@@ -274,72 +274,12 @@ div.draggable = false;
 dragHandle.className = "drag-handle";
 dragHandle.textContent = "☰";
 div.appendChild(dragHandle);
-    let longPressTimer;
-let pressStartX = 0;
-let pressStartY = 0;
-let longPressActivated = false;
-dragHandle.addEventListener("pointerdown", event => {
-  pressStartX = event.clientX;
-  pressStartY = event.clientY;
-  longPressActivated = false;
+   dragHandle.addEventListener("pointerdown", event => {
+  event.stopPropagation();
 
-  // 指を置いた瞬間から追跡する
-  dragHandle.setPointerCapture(event.pointerId);
-
-  longPressTimer = setTimeout(() => {
-    longPressActivated = true;
-    draggedItem = div;
-
-    if (navigator.vibrate) {
-      navigator.vibrate(50);
-    }
-  }, 500);
+  draggedItem = div;
+  div.classList.add("dragging");
 });
-    dragHandle.addEventListener("pointerup", () => {
-  clearTimeout(longPressTimer);
-});
-
-dragHandle.addEventListener("pointercancel", () => {
-  clearTimeout(longPressTimer);
-});
-
-dragHandle.addEventListener("pointerleave", () => {
-  if (!draggedItem) {
-    clearTimeout(longPressTimer);
-  }
-});
-    dragHandle.addEventListener("pointermove", event => {
-      if (!longPressActivated) {
-  const moveX = Math.abs(event.clientX - pressStartX);
-  const moveY = Math.abs(event.clientY - pressStartY);
-
-  if (moveX > 10 || moveY > 10) {
-  clearTimeout(longPressTimer);
-    longPressActivated = false;
-  longPressTimer = null;
-  longPressActivated = false;
-}
-
-  return;
-}
-  if (!draggedItem) return;
-
-  const target = document
-    .elementFromPoint(event.clientX, event.clientY)
-    ?.closest(".item");
-
-  if (!target || target === draggedItem) return;
-
-  const rect = target.getBoundingClientRect();
-  const after = event.clientY > rect.top + rect.height / 2;
-
-  if (after) {
-    target.after(draggedItem);
-  } else {
-    target.before(draggedItem);
-  }
-});
-   dragHandle.addEventListener("pointerup", async () => {
   clearTimeout(longPressTimer);
 
   // 長押しが成立していなければ何もしない
