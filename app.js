@@ -277,9 +277,30 @@ div.appendChild(dragHandle);
     div.addEventListener("dragstart", () => {
   draggedItem = div;
 });
-    dragHandle.addEventListener("pointerdown", event => {
-  draggedItem = div;
-  dragHandle.setPointerCapture(event.pointerId);
+   let longPressTimer;
+
+dragHandle.addEventListener("pointerdown", event => {
+  longPressTimer = setTimeout(() => {
+    draggedItem = div;
+    dragHandle.setPointerCapture(event.pointerId);
+
+    if (navigator.vibrate) {
+      navigator.vibrate(50);
+    }
+  }, 500);
+});
+    dragHandle.addEventListener("pointerup", () => {
+  clearTimeout(longPressTimer);
+});
+
+dragHandle.addEventListener("pointercancel", () => {
+  clearTimeout(longPressTimer);
+});
+
+dragHandle.addEventListener("pointerleave", () => {
+  if (!draggedItem) {
+    clearTimeout(longPressTimer);
+  }
 });
     dragHandle.addEventListener("pointermove", event => {
   if (!draggedItem) return;
@@ -299,7 +320,12 @@ div.appendChild(dragHandle);
     target.before(draggedItem);
   }
 });
-    dragHandle.addEventListener("pointerup", async () => {
+   dragHandle.addEventListener("pointerup", async () => {
+  clearTimeout(longPressTimer);
+
+  // 長押しが成立していなければ何もしない
+  if (!draggedItem) return;
+
   itemOrder = [...checklist.querySelectorAll(".item")]
     .map(el => el.dataset.id);
 
