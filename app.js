@@ -35,7 +35,11 @@ const defaultItems = [
   text: "補充チェック",
   category: "補充"
 },
- 
+{
+  id: "night_check",
+  text: "夜勤チェック",
+  category: "夜勤"
+},
 
   {
     id: "washoku_handover",
