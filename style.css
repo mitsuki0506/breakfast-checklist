@@ -35,7 +35,7 @@ h1{
 
     font-size:18px;
     font-weight:700;
-    color:#222;
+    color:#111827;
 
     border:1px solid #e5e5e5;
     border-radius:12px;
@@ -165,7 +165,7 @@ flex:1;}
 
     .progress{
         background:#181818;
-        border-color:#333;
+        border-color:#111827;
     }
 
     .item{
