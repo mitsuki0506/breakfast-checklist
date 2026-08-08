@@ -253,7 +253,10 @@ if (itemOrder.length > 0) {
     return itemOrder.indexOf(a.id) - itemOrder.indexOf(b.id);
   });
 }
-
+  
+console.log("現在のitems", items.map(i => i.id));
+console.log("保存順", itemOrder);
+  
 items.forEach(item => {
 
 
