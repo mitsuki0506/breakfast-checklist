@@ -573,6 +573,13 @@ const addItemButton =
 document.querySelectorAll(".tab-button").forEach(button => {
   button.addEventListener("click", () => {
     currentCategory = button.dataset.category;
+
+    document.querySelectorAll(".tab-button").forEach(btn => {
+      btn.classList.remove("active");
+    });
+
+    button.classList.add("active");
+
     renderChecklist();
   });
 });
