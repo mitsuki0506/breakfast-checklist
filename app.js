@@ -465,27 +465,7 @@ div.addEventListener("dragover", event => {
     div.before(draggedItem);
   }
 });
-    div.addEventListener("dragend", async () => {
-itemOrder = [...checklist.querySelectorAll(".item")]
-  .map(el => el.dataset.id);
-
-  try {
-    await setDoc(
-      settingsRef,
-     {
-  items: customItems,
-  itemOrder: itemOrder
-},
-      {
-        merge: true
-      }
-    );
-  } catch (error) {
-    console.error("並び順の保存エラー:", error);
-  }
-
-  draggedItem = null;
-});
+    
     checklist.appendChild(div);
   });
 
