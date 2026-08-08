@@ -246,9 +246,15 @@ function renderChecklist() {
 
   checklist.innerHTML = "";
 
-  const items = getItems();
+ let items = getItems();
 
-  items.forEach(item => {
+if (itemOrder.length > 0) {
+  items.sort((a, b) => {
+    return itemOrder.indexOf(a.id) - itemOrder.indexOf(b.id);
+  });
+}
+
+items.forEach(item => {
 
 
     const div =
