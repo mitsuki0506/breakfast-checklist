@@ -489,8 +489,6 @@ itemOrder = [...checklist.querySelectorAll(".item")]
   updateProgress();
 }
 
-// 最初に表示
-renderChecklist();
 
 // Firebaseをリアルタイム監視
 onSnapshot(
