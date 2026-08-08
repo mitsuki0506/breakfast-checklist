@@ -143,18 +143,6 @@ function getItems() {
     ...customItems
   ];
 
-  if (itemOrder.length !== 0) {
-    items.sort((a, b) => {
-      const aIndex = itemOrder.indexOf(a.id);
-      const bIndex = itemOrder.indexOf(b.id);
-
-      if (aIndex === -1) return 1;
-      if (bIndex === -1) return -1;
-
-      return aIndex - bIndex;
-    });
-  }
-
   console.log("表示items", items);
   console.log("category", currentCategory);
 
