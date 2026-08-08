@@ -195,6 +195,8 @@ const settingsRef = doc(
   "customItems"
 );
 // 進捗表示
+let wasAllCompleted = false;
+
 function updateProgress() {
 
   const items = getItems();
@@ -203,19 +205,48 @@ function updateProgress() {
     item => state[item.id] === true
   ).length;
 
-  if (completed === items.length) {
+  const allCompleted = items.length > 0 && completed === items.length;
 
-    progress.textContent =
-      `✅ ${completed} / ${items.length} すべて完了`;
+if (allCompleted) {
+  progress.textContent =
+    `✅ ${completed} / ${items.length} すべて完了`;
 
-  } else {
-
-    progress.textContent =
-      `${completed} / ${items.length} 完了`;
-
+  if (!wasAllCompleted) {
+    showCompletionCelebration();
   }
+
+} else {
+  progress.textContent =
+    `${completed} / ${items.length} 完了`;
 }
 
+wasAllCompleted = allCompleted;
+}
+
+function showCompletionCelebration() {
+  const message = document.createElement("div");
+  message.textContent = "🎉 朝食準備完了！お疲れさまでした！";
+  message.className = "completion-message";
+  document.body.appendChild(message);
+
+  for (let i = 0; i < 40; i++) {
+    const confetti = document.createElement("div");
+    confetti.className = "confetti";
+    confetti.textContent = ["🎉", "✨", "🎊", "🍞"][Math.floor(Math.random() * 4)];
+    confetti.style.left = Math.random() * 100 + "vw";
+    confetti.style.animationDelay = Math.random() * 0.5 + "s";
+
+    document.body.appendChild(confetti);
+
+    setTimeout(() => {
+      confetti.remove();
+    }, 3000);
+  }
+
+  setTimeout(() => {
+    message.remove();
+  }, 3000);
+}
 
 
 // チェック状態をFirebaseに保存
