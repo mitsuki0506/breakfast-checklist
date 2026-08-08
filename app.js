@@ -253,7 +253,13 @@ function renderChecklist() {
 
 if (itemOrder.length > 0) {
   items.sort((a, b) => {
-    return itemOrder.indexOf(a.id) - itemOrder.indexOf(b.id);
+    const aIndex = itemOrder.indexOf(a.id);
+    const bIndex = itemOrder.indexOf(b.id);
+
+    if (aIndex === -1) return 1;
+    if (bIndex === -1) return -1;
+
+    return aIndex - bIndex;
   });
 }
 
