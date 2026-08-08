@@ -30,7 +30,11 @@ const defaultItems = [
   text: "1台目カート揃っているか",
   category: "準備"
 },
-
+{
+  id: "refill_test",
+  text: "補充チェック",
+  category: "補充"
+},
  
 
   {
