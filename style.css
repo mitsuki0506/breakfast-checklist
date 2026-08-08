@@ -373,3 +373,52 @@ cursor: grab;
 .item.dragging .drag-handle {
   opacity: 1;
 }
+.completion-message {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #111;
+  color: white;
+  padding: 18px 28px;
+  border-radius: 14px;
+  font-size: 22px;
+  font-weight: bold;
+  z-index: 9999;
+  text-align: center;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+  animation: completionPop 0.4s ease;
+}
+
+.confetti {
+  position: fixed;
+  top: -40px;
+  font-size: 24px;
+  z-index: 9998;
+  pointer-events: none;
+  animation: confettiFall 2.5s linear forwards;
+}
+
+@keyframes completionPop {
+  0% {
+    transform: translate(-50%, -50%) scale(0.6);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes confettiFall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(110vh) rotate(720deg);
+    opacity: 0;
+  }
+}
