@@ -314,25 +314,10 @@ if (item && item !== draggedItem) {
   }
 }
 });
-
-dragHandle.addEventListener("pointerup", async () => {
+dragHandle.addEventListener("pointerup", () => {
   draggedItem.classList.remove("dragging");
-  itemOrder = [...checklist.querySelectorAll(".item")]
-  .map(el => el.dataset.id);
-console.log("保存する順番", itemOrder);
-  alert(JSON.stringify(itemOrder));
-  
-await setDoc(
- checklistRef,
-  {
-    itemOrder: itemOrder
-  },
-  {
-    merge: true
-  }
-);
   draggedItem = null;
-}); 
+});
 
     const label =
       document.createElement("label");
@@ -469,6 +454,29 @@ div.addEventListener("dragover", event => {
     checklist.appendChild(div);
   });
 
+  const saveOrderButton = document.createElement("button");
+saveOrderButton.textContent = "並び順を確定";
+saveOrderButton.id = "save-order-button";
+
+saveOrderButton.addEventListener("click", async () => {
+  itemOrder = [...checklist.querySelectorAll(".item")]
+    .map(el => el.dataset.id);
+
+  await setDoc(
+    checklistRef,
+    {
+      itemOrder: itemOrder
+    },
+    {
+      merge: true
+    }
+  );
+
+  alert("並び順を保存しました");
+});
+
+checklist.appendChild(saveOrderButton);
+  
   updateProgress();
 }
 
