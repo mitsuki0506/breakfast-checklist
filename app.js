@@ -489,9 +489,37 @@ div.addEventListener("dragover", event => {
 saveOrderButton.textContent = "並び順を確定";
 saveOrderButton.id = "save-order-button";
 
-saveOrderButton.addEventListener("click", async () => {
-  itemOrder = [...checklist.querySelectorAll(".item")]
-    .map(el => el.dataset.id);
+const currentOrder = [...checklist.querySelectorAll(".item")]
+  .map(el => el.dataset.id);
+
+const currentIds = new Set(
+  getItems().map(item => item.id)
+);
+
+const otherOrder = itemOrder.filter(
+  id => !currentIds.has(id)
+);
+
+const allItems = [
+  ...defaultItems.filter(
+    item => !deletedDefaultIds.includes(item.id)
+  ),
+  ...customItems
+];
+
+const missingOtherItems = allItems
+  .filter(
+    item =>
+      item.category !== currentCategory &&
+      !otherOrder.includes(item.id)
+  )
+  .map(item => item.id);
+
+itemOrder = [
+  ...otherOrder,
+  ...missingOtherItems,
+  ...currentOrder
+];
 
   await setDoc(
     checklistRef,
