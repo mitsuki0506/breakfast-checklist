@@ -562,16 +562,12 @@ updateProgress();
 const addItemButton =
   document.getElementById("addItemButton");
 
-document.getElementById("orderButton").addEventListener("click", () => {
-  currentCategory = "発注";
-  renderChecklist();
+document.querySelectorAll(".tab-button").forEach(button => {
+  button.addEventListener("click", () => {
+    currentCategory = button.dataset.category;
+    renderChecklist();
+  });
 });
-
-document.getElementById("prepareButton").addEventListener("click", () => {
-  currentCategory = "準備";
-  renderChecklist();
-});
-
 addItemButton.addEventListener("click", async () => {
 
   const text = prompt(
