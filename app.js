@@ -488,7 +488,7 @@ div.addEventListener("dragover", event => {
   const saveOrderButton = document.createElement("button");
 saveOrderButton.textContent = "並び順を確定";
 saveOrderButton.id = "save-order-button";
-
+saveOrderButton.addEventListener("click", async () => {
 const currentOrder = [...checklist.querySelectorAll(".item")]
   .map(el => el.dataset.id);
 
