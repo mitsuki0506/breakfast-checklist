@@ -303,6 +303,7 @@ dragHandle.addEventListener("pointerup", async () => {
   itemOrder = [...checklist.querySelectorAll(".item")]
   .map(el => el.dataset.id);
 console.log("保存する順番", itemOrder);
+  alert(JSON.stringify(itemOrder));
   
 await setDoc(
  checklistRef,
