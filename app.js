@@ -225,7 +225,7 @@ wasAllCompleted = allCompleted;
 
 function showCompletionCelebration() {
   const message = document.createElement("div");
-  message.textContent = "🎉 朝食準備完了！お疲れさまでした！";
+  message.textContent = "🎉 準備完了！お疲れさまでした！";
   message.className = "completion-message";
   document.body.appendChild(message);
 
