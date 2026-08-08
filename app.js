@@ -609,7 +609,7 @@ onSnapshot(
   const data = snapshot.data();
 
   customItems = data.items || [];
-  itemOrder = data.itemOrder || [];
+ // itemOrderはchecklistRef側で管理するためここでは変更しない
   deletedDefaultIds = data.deletedDefaultIds || [];
 } else {
   customItems = [];
