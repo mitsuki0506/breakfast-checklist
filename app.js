@@ -522,7 +522,7 @@ itemOrder = [
 ];
 
   await setDoc(
-    checklistRef,
+    settingsRef,
     {
       itemOrder: itemOrder
     },
@@ -551,8 +551,7 @@ onSnapshot(
       const data = snapshot.data();
 
       state = data.checked || {};
-      itemOrder = data.itemOrder || [];
-
+    
       console.log("読み込んだ順番", itemOrder);
     } else {
 
@@ -677,7 +676,7 @@ onSnapshot(
   const data = snapshot.data();
 
   customItems = data.items || [];
- // itemOrderはchecklistRef側で管理するためここでは変更しない
+ itemOrder = data.itemOrder || [];
   deletedDefaultIds = data.deletedDefaultIds || [];
 } else {
   customItems = [];
