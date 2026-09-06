@@ -422,3 +422,25 @@ cursor: grab;
     opacity: 0;
   }
 }
+
+    .main-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.main-tab {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: #e5e5e5;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.main-tab.active {
+  background: #222;
+  color: white;
+}
