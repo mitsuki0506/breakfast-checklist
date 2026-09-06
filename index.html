@@ -50,6 +50,27 @@
 
   <div id="regineContent" style="display: none;">
   <h2>レジーヌ</h2>
+
+  <div class="tabs">
+    <button class="regine-tab-button active" data-category="準備">準備</button>
+    <button class="regine-tab-button" data-category="発注">発注</button>
+    <button class="regine-tab-button" data-category="補充">補充</button>
+    <button class="regine-tab-button" data-category="夜勤">夜勤</button>
+  </div>
+
+  <div class="progress">
+    <span id="regineProgress">0 / 0 完了</span>
+  </div>
+
+  <button id="regineResetButton" class="reset-button">
+    全てのチェックを解除
+  </button>
+
+  <div id="regineChecklist"></div>
+
+  <button id="regineAddItemButton" class="add-button">
+    ＋ チェック項目を追加
+  </button>
 </div>
 
 <script type="module" src="app.js?v=2"></script>
