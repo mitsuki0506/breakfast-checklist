@@ -18,7 +18,14 @@
 <div class="container">
 
     <h1>朝食チェックリスト</h1>
+
+  <div class="main-tabs">
+  <button id="breakfastTab" class="main-tab active">朝食</button>
+  <button id="regineTab" class="main-tab">レジーヌ</button>
+</div>
   
+  <div id="breakfastContent">
+    
 <div class="tabs">
   <button class="tab-button active" data-category="準備">準備</button>
  <button class="tab-button" data-category="発注">カート</button>
@@ -39,6 +46,10 @@
     ＋ チェック項目を追加
 </button>
 
+</div>
+
+  <div id="regineContent" style="display: none;">
+  <h2>レジーヌ</h2>
 </div>
 
 <script type="module" src="app.js?v=2"></script>
