@@ -431,16 +431,18 @@ cursor: grab;
 
 .main-tab {
   flex: 1;
-  padding: 12px;
-  border: none;
+  padding: 12px 10px;
+  border: 1px solid #d1d5db;
   border-radius: 10px;
-  background: #e5e5e5;
-  font-size: 16px;
-  font-weight: bold;
+  background: #f3f4f6;
+  color: #374151;
+  font-size: 15px;
+  font-weight: 700;
   cursor: pointer;
 }
 
 .main-tab.active {
-  background: #222;
+  background: #2563eb;
   color: white;
+  border-color: #2563eb;
 }
