@@ -207,6 +207,231 @@ const regineSettingsRef = doc(
   "regineSettings",
   "customItems"
 );
+
+let regineCustomItems = [];
+let regineDeletedDefaultIds = [];
+let regineItemOrder = [];
+let regineState = {};
+let regineCurrentCategory = "準備";
+
+function getRegineItems() {
+  const items = [
+    ...regineCustomItems
+  ];
+
+  return items
+    .filter(item => item.category === regineCurrentCategory)
+    .sort((a, b) => {
+      const aIndex = regineItemOrder.indexOf(a.id);
+      const bIndex = regineItemOrder.indexOf(b.id);
+
+      if (aIndex === -1 && bIndex === -1) return 0;
+      if (aIndex === -1) return 1;
+      if (bIndex === -1) return -1;
+
+      return aIndex - bIndex;
+    });
+}
+function updateRegineProgress() {
+  const items = getRegineItems();
+
+  const completed = items.filter(
+    item => regineState[item.id] === true
+  ).length;
+
+  const regineProgress = document.getElementById("regineProgress");
+
+  if (items.length > 0 && completed === items.length) {
+    regineProgress.textContent =
+      `✅ ${completed} / ${items.length} すべて完了`;
+  } else {
+    regineProgress.textContent =
+      `${completed} / ${items.length} 完了`;
+  }
+}
+
+function renderRegineChecklist() {
+  const regineChecklist = document.getElementById("regineChecklist");
+
+  regineChecklist.innerHTML = "";
+
+  const items = getRegineItems();
+
+  items.forEach(item => {
+    const div = document.createElement("div");
+    div.className = "item";
+    div.dataset.id = item.id;
+
+    const dragHandle = document.createElement("span");
+dragHandle.className = "drag-handle";
+dragHandle.textContent = "☰";
+
+div.appendChild(dragHandle);
+
+    dragHandle.addEventListener("pointerdown", event => {
+  event.stopPropagation();
+  event.preventDefault();
+
+  dragHandle.setPointerCapture(event.pointerId);
+
+  draggedItem = div;
+  div.classList.add("dragging");
+});
+    document.addEventListener("pointermove", event => {
+  if (!draggedItem) return;
+
+  const target = document.elementFromPoint(
+    event.clientX,
+    event.clientY
+  );
+
+  const item = target?.closest(".item");
+
+  if (item && item !== draggedItem) {
+    const rect = item.getBoundingClientRect();
+
+    if (event.clientY < rect.top + rect.height / 2) {
+      regineChecklist.insertBefore(draggedItem, item);
+    } else {
+      regineChecklist.insertBefore(
+        draggedItem,
+        item.nextSibling
+      );
+    }
+  }
+});
+
+    dragHandle.addEventListener("pointerup", () => {
+  if (!draggedItem) return;
+
+  draggedItem.classList.remove("dragging");
+  draggedItem = null;
+});
+
+    const label = document.createElement("label");
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = regineState[item.id] === true;
+
+    const text = document.createElement("span");
+    text.textContent = item.text;
+
+    label.appendChild(checkbox);
+    label.appendChild(text);
+    div.appendChild(label);
+
+    const deleteButton = document.createElement("button");
+
+deleteButton.className = "delete-button";
+deleteButton.textContent = "削除";
+
+deleteButton.addEventListener("click", async event => {
+  event.preventDefault();
+  event.stopPropagation();
+
+  const answer = confirm(
+    `「${item.text}」を削除しますか？`
+  );
+
+  if (!answer) return;
+
+  regineCustomItems = regineCustomItems.filter(
+    custom => custom.id !== item.id
+  );
+
+  try {
+    await setDoc(
+      regineSettingsRef,
+      {
+        items: regineCustomItems
+      },
+      {
+        merge: true
+      }
+    );
+
+    renderRegineChecklist();
+
+  } catch (error) {
+    console.error(error);
+    alert("レジーヌの項目を削除できませんでした。");
+  }
+});
+
+div.appendChild(deleteButton);
+
+    if (checkbox.checked) {
+      div.classList.add("done");
+    }
+
+    checkbox.addEventListener("change", async () => {
+  regineState[item.id] = checkbox.checked;
+
+  div.classList.toggle(
+    "done",
+    checkbox.checked
+  );
+
+  updateRegineProgress();
+
+  try {
+    await setDoc(
+      regineChecklistRef,
+      {
+        date: today,
+        checked: {
+          [item.id]: checkbox.checked
+        }
+      },
+      {
+        merge: true
+      }
+    );
+  } catch (error) {
+    console.error(error);
+    alert("レジーヌのチェック状態を保存できませんでした。");
+  }
+});
+
+    regineChecklist.appendChild(div);
+  });
+
+  const regineSaveOrderButton = document.createElement("button");
+regineSaveOrderButton.textContent = "並び順を確定";
+regineSaveOrderButton.id = "regine-save-order-button";
+
+regineChecklist.appendChild(regineSaveOrderButton);
+
+  regineSaveOrderButton.addEventListener("click", async () => {
+  const itemElements =
+    regineChecklist.querySelectorAll(".item");
+
+  regineItemOrder = Array.from(itemElements).map(
+    element => element.dataset.id
+  );
+
+  try {
+    await setDoc(
+      regineSettingsRef,
+      {
+        itemOrder: regineItemOrder
+      },
+      {
+        merge: true
+      }
+    );
+
+    alert("並び順を保存しました");
+
+  } catch (error) {
+    console.error(error);
+    alert("並び順を保存できませんでした。");
+  }
+});
+  updateRegineProgress();
+}
+
 // 進捗表示
 let wasAllCompleted = false;
 
@@ -746,4 +971,144 @@ regineTab.addEventListener("click", () => {
 
   regineTab.classList.add("active");
 breakfastTab.classList.remove("active");
+});
+
+const regineAddItemButton =
+  document.getElementById("regineAddItemButton");
+
+regineAddItemButton.addEventListener("click", async () => {
+  const text = prompt(
+    "レジーヌに追加するチェック項目を入力してください"
+  );
+
+  if (!text) return;
+
+  const cleanText = text.trim();
+
+  if (!cleanText) return;
+
+  const newItem = {
+    id: "regine_custom_" + Date.now(),
+    text: cleanText,
+    custom: true,
+    category: regineCurrentCategory
+  };
+
+  regineCustomItems.push(newItem);
+
+  try {
+    await setDoc(
+      regineSettingsRef,
+      {
+        items: regineCustomItems
+      },
+      {
+        merge: true
+      }
+    );
+
+    renderRegineChecklist();
+
+  } catch (error) {
+    console.error(error);
+    alert("レジーヌの項目を追加できませんでした。");
+  }
+});
+
+document.querySelectorAll(".regine-tab-button").forEach(button => {
+  button.addEventListener("click", () => {
+    regineCurrentCategory = button.dataset.category;
+
+    document.querySelectorAll(".regine-tab-button").forEach(btn => {
+      btn.classList.remove("active");
+    });
+
+    button.classList.add("active");
+
+    renderRegineChecklist();
+  });
+});
+
+onSnapshot(
+  regineSettingsRef,
+  snapshot => {
+    if (snapshot.exists()) {
+      const data = snapshot.data();
+
+      regineCustomItems = data.items || [];
+      regineItemOrder = data.itemOrder || [];
+      regineDeletedDefaultIds = data.deletedDefaultIds || [];
+    } else {
+      regineCustomItems = [];
+      regineItemOrder = [];
+      regineDeletedDefaultIds = [];
+    }
+
+    renderRegineChecklist();
+  },
+  error => {
+    console.error(
+      "レジーヌ設定の読み込みエラー:",
+      error
+    );
+  }
+);
+
+onSnapshot(
+  regineChecklistRef,
+  snapshot => {
+    if (snapshot.exists()) {
+      const data = snapshot.data();
+      regineState = data.checked || {};
+    } else {
+      regineState = {};
+    }
+
+    renderRegineChecklist();
+  },
+  error => {
+    console.error(
+      "レジーヌチェックの読み込みエラー:",
+      error
+    );
+  }
+);
+
+const regineResetButton =
+  document.getElementById("regineResetButton");
+
+regineResetButton.addEventListener("click", async () => {
+  const answer = confirm(
+    "レジーヌの今日のチェックをすべて解除しますか？"
+  );
+
+  if (!answer) return;
+
+  const items = getRegineItems();
+  const emptyState = {};
+
+  items.forEach(item => {
+    emptyState[item.id] = false;
+  });
+
+  try {
+    await setDoc(
+      regineChecklistRef,
+      {
+        date: today,
+        checked: emptyState
+      },
+      {
+        merge: true
+      }
+    );
+
+    regineState = emptyState;
+    renderRegineChecklist();
+    updateRegineProgress();
+
+  } catch (error) {
+    console.error(error);
+    alert("レジーヌの全解除ができませんでした。");
+  }
 });
