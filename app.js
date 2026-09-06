@@ -712,3 +712,19 @@ if ("serviceWorker" in navigator) {
   });
 
 }
+
+const breakfastTab = document.getElementById("breakfastTab");
+const regineTab = document.getElementById("regineTab");
+
+const breakfastContent = document.getElementById("breakfastContent");
+const regineContent = document.getElementById("regineContent");
+
+breakfastTab.addEventListener("click", () => {
+  breakfastContent.style.display = "block";
+  regineContent.style.display = "none";
+});
+
+regineTab.addEventListener("click", () => {
+  breakfastContent.style.display = "none";
+  regineContent.style.display = "block";
+});
