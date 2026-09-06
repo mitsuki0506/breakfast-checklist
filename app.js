@@ -194,6 +194,19 @@ const settingsRef = doc(
   "breakfastSettings",
   "customItems"
 );
+
+// レジーヌ用
+const regineChecklistRef = doc(
+  db,
+  "regineChecklists",
+  today
+);
+
+const regineSettingsRef = doc(
+  db,
+  "regineSettings",
+  "customItems"
+);
 // 進捗表示
 let wasAllCompleted = false;
 
