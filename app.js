@@ -722,9 +722,15 @@ const regineContent = document.getElementById("regineContent");
 breakfastTab.addEventListener("click", () => {
   breakfastContent.style.display = "block";
   regineContent.style.display = "none";
+  
+  breakfastTab.classList.add("active");
+regineTab.classList.remove("active");
 });
 
 regineTab.addEventListener("click", () => {
   breakfastContent.style.display = "none";
   regineContent.style.display = "block";
+
+  regineTab.classList.add("active");
+breakfastTab.classList.remove("active");
 });
